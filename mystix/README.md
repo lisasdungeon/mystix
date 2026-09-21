@@ -163,6 +163,10 @@ The zip is directly installable in Foundry: point its manifest URL at your repo'
 
 Changelog entries use the format Foundry's package listing expects: one `### [x.y.z] — date` heading per release, newest first, with human-readable bullet points.
 
+### [0.2.12] — 2026-09-21
+
+- The sheet widget's **Mystic Points label** now uses the system's gold (bold, hardened against PF2e's own header styles) and the pips are brighter — the previous violet-on-crimson still read as too dim for some themes
+
 ### [0.2.11] — 2026-09-21
 
 - **Per-actor history popout**: a 🕘 button on each party HUD row (GM) opens the character's full logged Mystic Point history — lifetime net, spent vs. gained, pool progression, and every entry chronologically. Also `game.mystix.actorLog(actor)`

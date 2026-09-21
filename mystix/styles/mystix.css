@@ -11,16 +11,19 @@
  * The widget lives on the sheet's dark crimson header, so it needs light,
  * luminous colors — the darker arcane palette stays for the HUD and
  * dialogs, which sit on light backgrounds.
+ *
+ * The label uses the system's gold, like "Hero Points" on the same header;
+ * bold + !important so PF2e's own header rules can never out-specify it.
  */
 .dots.mystix-points .label {
-    font-size: var(--font-size-10);
-    font-weight: 600;
-    color: #f0e6d2;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    color: #f5c542 !important;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     margin-right: 0.15rem;
     white-space: nowrap;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .dots.mystix-points .pips {
@@ -36,23 +39,23 @@
 }
 
 .dots.mystix-points .pips i.fa-regular {
-    color: #cdb5e8;
-    opacity: 0.85;
+    color: #e2d5f7 !important;
+    opacity: 0.9;
 }
 
 /* Filled pips glow: bright arcane violet, clearly distinct from the
  * system's white/gold hero points on the same header. */
 .dots.mystix-points .pips i.fa-circle-m {
-    color: #c084fc;
+    color: #d8b4fe !important;
     text-shadow:
-        0 0 4px rgba(192, 132, 252, 0.9),
-        0 0 9px rgba(147, 90, 220, 0.55),
-        0 1px 2px rgba(0, 0, 0, 0.55);
+        0 0 4px rgba(216, 180, 254, 0.95),
+        0 0 10px rgba(168, 110, 235, 0.6),
+        0 1px 2px rgba(0, 0, 0, 0.6) !important;
 }
 
 .dots.mystix-points .pips:hover i {
     transform: scale(1.1);
-    color: #d8b4fe;
+    color: #e9d5ff;
 }
 
 /* ------------------------------------------------------------------ */
