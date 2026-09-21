@@ -141,6 +141,10 @@ export function describeAction(action, amount = null) {
             return loc("MYSTIX.Log.Actions.Effect");
         case "reroll":
             return loc("MYSTIX.Log.Actions.Reroll");
+        case "cancel":
+            return loc("MYSTIX.Log.Actions.Cancel");
+        case "failed":
+            return loc("MYSTIX.Log.Actions.Failed");
         default:
             return action;
     }

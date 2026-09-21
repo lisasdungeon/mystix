@@ -26,22 +26,41 @@ export function getMythicRerollBonus() {
 }
 
 /**
- * One-shot flag marking the in-flight reroll as a Mythic Point reroll, so the
- * `pf2e.preReroll` hook only touches rerolls this module initiated.
+ * A MystiX-initiated Mythic Point reroll is in flight: true from the click
+ * until `performMythicReroll` finishes. `pf2e.reroll` (completion) fires while
+ * this is still true, so `confirmMythicReroll` can see it.
  */
 let pendingMythicReroll = false;
 
+/** The +10 boost has not been applied yet; consumed by `applyMythicProficiency`. */
+let pendingMythicBoost = false;
+
 /**
- * Mark the next `pf2e.preReroll` firing as a MystiX-initiated Mythic Point
- * reroll. Exposed for testing; the click path calls this via `onRerollClick`.
+ * Set once the system has genuinely rerolled (`pf2e.reroll` fired); a MystiX
+ * reroll that finishes without it was cancelled or silently bailed, and its
+ * point is refunded.
+ */
+let completedMythicReroll = false;
+
+/**
+ * Mark a MystiX-initiated Mythic Point reroll as started. Exposed for
+ * testing; the click path calls this via `performMythicReroll`.
  */
 export function beginMythicReroll() {
     pendingMythicReroll = true;
+    pendingMythicBoost = true;
 }
 
 /** Whether a Mythic Point reroll is currently in flight. */
 export function isMythicRerollPending() {
     return pendingMythicReroll;
+}
+
+/** Clear all reroll state. Defensive; also used between tests. */
+export function resetRerollState() {
+    pendingMythicReroll = false;
+    pendingMythicBoost = false;
+    completedMythicReroll = false;
 }
 
 /**
@@ -69,6 +88,8 @@ export function registerChatReroll() {
         injectRerollButtons(message, html);
     });
     Hooks.on("pf2e.preReroll", applyMythicProficiency);
+    // Confirms that a reroll actually happened; drives cancellation refunds.
+    Hooks.on("pf2e.reroll", confirmMythicReroll);
 }
 
 /**
@@ -113,22 +134,56 @@ export async function performMythicReroll(message) {
         return;
     }
     beginMythicReroll();
+    completedMythicReroll = false;
     try {
         // Flag the message so every client renders the Mythic indicator;
         // `applyMythicIndicator` swaps it in on render.
         await message.setFlag?.("mystix", "mythicReroll", getMythicRerollBonus());
         await game.pf2e.Check.rerollFromMessage(message, {});
+
+        // The system fires `pf2e.reroll` only when a new roll actually
+        // happened. If it never fired, the reroll was cancelled or silently
+        // bailed (authorship guards, dismissed interactions) — refund.
+        if (!completedMythicReroll) {
+            await message.unsetFlag?.("mystix", "mythicReroll").catch(() => {});
+            await refundMythicPoint(actor, describeRerollDetail(message), "cancel");
+            ui.notifications.info(loc("MYSTIX.Chat.RerollRefunded"));
+        }
     } catch (error) {
         await message.unsetFlag?.("mystix", "mythicReroll").catch(() => {});
-        // Refund the point rather than silently eating it on a failed reroll.
-        const data = getMysticData(actor);
-        await actor.update({ "flags.mystix.value": data.value + 1 });
-        recordActivity({ actor, action: "failed", detail: describeRerollDetail(message) });
+        await refundMythicPoint(actor, describeRerollDetail(message), "failed");
         ui.notifications.error(loc("MYSTIX.Chat.RerollFailed"));
         console.error("MystiX | rerollFromMessage error:", error);
     } finally {
         pendingMythicReroll = false;
+        pendingMythicBoost = false;
+        completedMythicReroll = false;
     }
+}
+
+/**
+ * `pf2e.reroll` hook: the system has genuinely rerolled. Marks the in-flight
+ * MystiX reroll as complete so no cancellation refund fires.
+ * @param {Roll} _oldRoll
+ * @param {Roll} _newRoll
+ * @param {boolean} [heroPoint]
+ */
+export function confirmMythicReroll(_oldRoll, _newRoll, heroPoint = false) {
+    if (heroPoint || !pendingMythicReroll) return;
+    completedMythicReroll = true;
+}
+
+/**
+ * Return one Mythic Point to an actor's pool and log the reversal.
+ * @param {ActorPF2e} actor
+ * @param {string} detail What the reroll was for, for the log entry
+ * @param {"cancel"|"failed"} action Log action code
+ */
+async function refundMythicPoint(actor, detail, action) {
+    const data = getMysticData(actor);
+    const max = data.max;
+    await actor.update({ "flags.mystix.value": Math.clamp(data.value + 1, 0, max) });
+    recordActivity({ actor, action, amount: 1, from: data.value, to: Math.min(data.value + 1, max), detail });
 }
 
 /**
@@ -140,8 +195,8 @@ export async function performMythicReroll(message) {
  * @param {boolean} [heroPoint] True when the system is spending a hero point
  */
 export function applyMythicProficiency(_oldRoll, newRoll, heroPoint = false) {
-    if (heroPoint || !pendingMythicReroll) return;
-    pendingMythicReroll = false;
+    if (heroPoint || !pendingMythicBoost) return;
+    pendingMythicBoost = false;
     const bonus = getMythicRerollBonus();
     if (bonus === 0) return; // plain reroll — nothing to add
     const { OperatorTerm, NumericTerm } = foundry.dice.terms;

@@ -91,6 +91,7 @@ export function setupFoundryMocks() {
     };
     globalThis.ui = {
         notifications: {
+            info: mock.fn(),
             warn: mock.fn(),
             error: mock.fn(),
         },
@@ -125,6 +126,7 @@ export function setupFoundryMocks() {
 
 /** Clear the notifications call history between assertions. */
 export function resetNotifications() {
+    globalThis.ui.notifications.info.mock.resetCalls();
     globalThis.ui.notifications.warn.mock.resetCalls();
     globalThis.ui.notifications.error.mock.resetCalls();
 }

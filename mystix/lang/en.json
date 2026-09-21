@@ -27,6 +27,7 @@
       "MythicIndicatorBonus": "{actor} rerolled using a Mythic Point (+{bonus})",
       "RerollNoPoints": "{actor} has no Mythic Points to spend.",
       "RerollFailed": "MystiX | Reroll failed — Mythic Point refunded.",
+      "RerollRefunded": "Mythic Point refunded — the reroll was cancelled.",
       "RerollButtonHero": "Hero",
       "RerollTooltipHero": "Reroll this check using a Hero Point.",
       "RerollButtonMythic": "Mythic"
@@ -128,7 +129,9 @@
         "Refresh": "refreshed to full",
         "FixedGrant": "+{amount} from encounter",
         "Effect": "triggered a mystic effect",
-        "Reroll": "rerolled a check"
+        "Reroll": "rerolled a check",
+        "Cancel": "Mythic Point refunded — reroll cancelled",
+        "Failed": "Mythic Point refunded — reroll failed"
       }
     },
     "ActorLog": {

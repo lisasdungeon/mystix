@@ -57,7 +57,7 @@ await game.mystix.closeSession(); // confirm, then post the report
 
 ### As a player
 
-- **Spend on a reroll:** rerollable check cards show a *Mythic* button when the actor has points — one click spends a Mythic Point and rerolls with the configured bonus (default +10, the mythic proficiency bonus; set it to 0 for a plain reroll in Settings → MystiX → Mythic Reroll Bonus). A *Hero* button sits beside it when Hero Points are available, and both options remain in the chat card's right-click menu. After a Mythic reroll, the card carries a glowing **fa-circle-m indicator** (the system's hero-point reroll marker, restyled) whose tooltip says who spent the point and at what bonus.
+- **Spend on a reroll:** rerollable check cards show a *Mythic* button when the actor has points — one click spends a Mythic Point and rerolls with the configured bonus (default +10, the mythic proficiency bonus; set it to 0 for a plain reroll in Settings → MystiX → Mythic Reroll Bonus). A *Hero* button sits beside it when Hero Points are available, and both options remain in the chat card's right-click menu. A Mythic Point is only ever consumed by a reroll that actually happens: if the reroll is cancelled or fails, the point is refunded and logged, and a notice says so. After a Mythic reroll, the card carries a glowing **fa-circle-m indicator** (the system's hero-point reroll marker, restyled) whose tooltip says who spent the point and at what bonus.
 - **Trigger a mythic effect:** shift-click the Mythic pips in the party HUD. If your GM configured more than one effect, a picker shows them with one-line summaries; pick one, spend one, and the effect's chat card announces it to the table.
 - **Spend freely:** with no effects configured, left-click still spends a plain point for any table-ruled use.
 
@@ -160,6 +160,11 @@ Publishing a release is tag-driven (`.github/workflows/release.yml`):
 The zip is directly installable in Foundry: point its manifest URL at your repo's `module.json` (as in the Installation section) and players can install any published version.
 
 ## Changelog
+
+### [0.2.17] — 2026-09-21
+
+- **No more lost points on cancelled rerolls**: the system only confirms a reroll via its `pf2e.reroll` hook when a new roll genuinely happens — if the reroll is cancelled or silently bails (dismissed dialog, authorship guard), the Mythic Point is **refunded**, the glowing indicator flag is removed, and an info notice explains why. Previously the point was only refunded when the reroll *threw* an error
+- Cancellation and failure refunds are now proper ledger entries (*Mythic Point refunded — reroll cancelled / failed*) with from → to pool values, so the activity log still balances against the pools
 
 ### [0.2.16] — 2026-09-21
 
