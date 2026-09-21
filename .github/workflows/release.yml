@@ -61,6 +61,13 @@ jobs:
             templates \
             README.md
 
+      - name: Verify zip against repo state
+        run: |
+          node .github/workflows/scripts/verify-zip.mjs \
+            "$GITHUB_WORKSPACE/dist/module.zip" \
+            "${MODDIR}/module.json" \
+            "${GITHUB_REF_NAME#v}"
+
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
