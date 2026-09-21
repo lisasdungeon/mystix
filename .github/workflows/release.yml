@@ -46,6 +46,9 @@ jobs:
             exit 1
           fi
 
+      - name: Verify changelog entry exists
+        run: node .github/workflows/scripts/check-changelog.mjs "${GITHUB_REF_NAME#v}" "${MODDIR}/README.md"
+
       - name: Build module zip
         run: |
           mkdir -p dist

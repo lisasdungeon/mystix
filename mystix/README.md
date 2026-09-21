@@ -145,16 +145,58 @@ CI (`.github/workflows/ci.yml`) runs both on every push to `main` and on pull re
 Publishing a release is tag-driven (`.github/workflows/release.yml`):
 
 1. Set the version in `module.json` (and `package.json`) — e.g. `0.3.0`
-2. Commit and push, then tag and push the tag:
+2. **Add a `### [0.3.0] — date` entry to the Changelog above** (newest first). The release workflow refuses to publish a version with no changelog entry, so the listing always stays current.
+3. Commit and push, then tag and push the tag:
 
    ```bash
    git tag v0.3.0
    git push origin v0.3.0
    ```
 
-3. The workflow verifies the tag matches `module.json`'s version, runs the test suite, zips `module.json`, `scripts/`, `styles/`, `lang/`, `templates/`, and `README.md` into `module.zip`, and publishes a GitHub Release with auto-generated notes.
+4. The workflow verifies the tag matches `module.json`'s version, checks the changelog, runs the test suite, zips `module.json`, `scripts/`, `styles/`, `lang/`, `templates/`, and `README.md` into `module.zip`, and publishes a GitHub Release. Auto-generated notes are thin without PRs — paste the new changelog bullets into the release notes (`gh release edit vX.Y.Z --notes "..."`) so the GitHub release matches the listing.
 
 The zip is directly installable in Foundry: point its manifest URL at your repo's `module.json` (as in the Installation section) and players can install any published version.
+
+## Changelog
+
+Changelog entries use the format Foundry's package listing expects: one `### [x.y.z] — date` heading per release, newest first, with human-readable bullet points.
+
+### [0.2.8] — 2026-09-21
+
+- The GM log viewer **remembers your last-used filters** (character, action, user, view) per user, restoring them on reopen
+- New **Summary view**: per-session, per-character net Mystic Point change with spent/gained totals and start → end pools; sessions split automatically after 30 minutes of inactivity
+- Fixed a `Number(null)` coercion that mis-tallied relayed player spends in summaries
+
+### [0.2.6] — 2026-09-20
+
+- **Export the activity log**: copy to clipboard or download RFC 4180 CSV (`mystix-log-YYYY-MM-DD.csv`, Excel-friendly BOM), honoring the active filters
+- Effect triggers and Mystic rerolls are logged with their detail (effect name / check)
+- Manifest URLs point at the live repository; the release workflow ships `module.json` as a release asset so Foundry's installer can always find it
+
+### [0.2.4] — 2026-09-20
+
+- New **GM log viewer** dialog: every entry with full timestamps, filterable by character, action type, and user, with a live match counter; opens from the token control bar, the party HUD, or `game.mystix.log.view()`
+- The HUD's collapsed log header shows the total entry count
+
+### [0.2.3] — 2026-09-20
+
+- New **Mystic Point activity log**: a rolling, timestamped record of spends, awards, and refreshes in the party HUD, kept in world settings with a single authoritative copy via a GM-side socket relay
+- Macro API: `game.mystix.log.get()` / `log.clear()`
+
+### [0.2.2] — 2026-09-20
+
+- **Encounter refresh style** setting: refill to full *or* a fixed grant per combat that accumulates toward each character's max — great for attrition-based play
+- Garbage-proof grant settings: negative/non-numeric values are treated as zero
+
+### [0.2.1] — 2026-09-20
+
+- Per-actor **Skip auto-refresh** opt-out in the award dialog, with a ⏸ badge in the party HUD
+- Pool writes now use dot-path flag updates so sibling flags (like the opt-out) are never clobbered
+
+### [0.2.0] — 2026-09-20
+
+- **Custom mystic effects**: a GM-managed registry of Mystic-Point-only powers — check bonuses (real PF2e FlatModifier effect items), auto-stabilize (removes dying), or chat-message-only — chosen by the spender from a picker, announced with styled chat cards, refunded on failure
+- Everything earlier (0.1.x): coexisting Hero/Mystic pools with sheet pips, GM award dialog, the party tracker HUD, chat-card Mystic rerolls, session/encounter auto-refresh, and the macro API
 
 ## Compatibility
 
