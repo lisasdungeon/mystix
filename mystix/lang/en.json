@@ -1,0 +1,175 @@
+{
+  "MYSTIX": {
+    "Name": "Mystic Points",
+    "NamePlural": "Mystic Points",
+    "HeroName": "Hero Points",
+    "Hint": "A second, GM-awarded pool that can be used for anything Hero Points can do.",
+    "SheetWidget": {
+      "Label": "Mystic Points",
+      "Tooltip": "Mystic Points {value}/{max} — a second, GM-awarded pool usable like Hero Points.",
+      "Award": "Award Mystic Points",
+      "Spend": "Spend Mystic Point",
+      "SpendHint": "Click to spend a Mystic Point on a Hero-Point-style use. Right-click to award (GM only)."
+    },
+    "Sheet": {
+      "Label": "Mystic Points",
+      "Tooltip": "Mystic Points {value}/{max}"
+    },
+    "Dialog": {
+      "AwardTitle": "Award Mystic Points — {actor}",
+      "AwardLabel": "Points to award (or negative to remove)",
+      "AwardHint": "Awards are added to the actor's current value, clamped to the Mystic Point maximum.",
+      "SetMaxLabel": "Max Mystic Points",
+      "SetMaxHint": "The pool size for this actor. Set to 0 to hide the widget for them.",
+      "Award": "Award",
+      "Cancel": "Cancel",
+      "RerollTitle": "Reroll with Mystic Point — {actor}",
+      "RerollBody": "Spend 1 Mystic Point to reroll this check? {actor} has {value} left.",
+      "RerollConfirm": "Reroll",
+      "RerollCancel": "Cancel",
+      "SpendTitle": "Spend Mystic Point",
+      "SpendBody": "Spend 1 of your {value} Mystic Points?",
+      "SkipRefreshLabel": "Skip auto-refresh",
+      "SkipRefreshHint": "Exclude this character from the automatic Mystic Point refreshes (session start and encounter start). Manual awarding and spending are unaffected.",
+      "SkipRefreshBadge": "Skips automatic Mystic Point refreshes"
+    },
+    "Chat": {
+      "RerollMenu": "PF2E | Reroll with Mystic Point",
+      "RerollNoPoints": "{actor} has no Mystic Points to spend.",
+      "RerollNotCheck": "Only d20 checks can be rerolled with a Mystic Point.",
+      "RerollFailed": "MystiX | Reroll failed — Mystic Point refunded."
+    },
+    "Settings": {
+      "AwardDefaultMax": {
+        "name": "Default Max Mystic Points",
+        "hint": "Maximum Mystic Points for characters that haven't had one set individually."
+      },
+      "HeroPointsEnabled": {
+        "name": "Hero Points Stay Enabled",
+        "hint": "Keep the regular Hero Point pool visible and usable alongside Mystic Points."
+      },
+      "ChatReroll": {
+        "name": "Enable Mystic Reroll Context Menu",
+        "hint": "Adds a 'Reroll with Mystic Point' option to chat message context menus."
+      },
+      "AutoOpenHud": {
+        "name": "Open Party HUD on World Load",
+        "hint": "Automatically open the party tracker when the world finishes loading (GM only)."
+      },
+      "RefreshOnSession": {
+        "name": "Refresh Mystic Points on Session Start",
+        "hint": "When the world loads, refill every character's Mystic Points to full. Happens at most once per calendar day, so reloading the world doesn't refresh again."
+      },
+      "RefreshOnEncounter": {
+        "name": "Refresh Mystic Points on Encounter Start",
+        "hint": "At the start of each combat, refill every character's pool to full — or grant a fixed amount, depending on the refresh style below."
+      },
+      "EncounterRefreshStyle": {
+        "name": "Encounter Refresh Style",
+        "hint": "Refill tops every pool up to full at the start of each combat. Fixed grants a set number of points per encounter, accumulating toward each character's max instead of resetting it.",
+        "Refill": "Refill to full",
+        "Fixed": "Fixed grant per encounter"
+      },
+      "EncounterGrant": {
+        "name": "Fixed Encounter Grant",
+        "hint": "Mystic Points granted to every character at the start of each combat when the refresh style is 'Fixed grant per encounter'."
+      }
+    },
+    "Errors": {
+      "GMOnly": "Only the GM can do that.",
+      "NotCharacter": "Mystic Points are only available on character sheets."
+    },
+    "LogViewer": {
+      "Title": "MystiX — Mystic Point Log",
+      "OpenTooltip": "Open the Mystic Point log viewer",
+      "FilterActor": "Character",
+      "FilterAction": "Action",
+      "FilterUser": "User",
+      "Detail": "Detail",
+      "AllActors": "All characters",
+      "AllActions": "All actions",
+      "AllUsers": "All users",
+      "ShowingCount": "{count} entries",
+      "NoMatches": "No log entries match the current filters.",
+      "Timestamp": "When",
+      "CopyLabel": "Copy",
+      "CopyTooltip": "Copy the filtered log entries to the clipboard (CSV format)",
+      "CsvLabel": "Download CSV",
+      "CsvTooltip": "Download the filtered log entries as a CSV file",
+      "CopiedCount": "MystiX | {count} log entries copied to the clipboard.",
+      "DownloadedCount": "MystiX | {count} log entries downloaded as CSV.",
+      "CopyFailed": "MystiX | Could not access the clipboard.",
+      "NothingToExport": "MystiX | Nothing to export — the filtered log is empty."
+    },
+    "HUD": {
+      "Title": "MystiX — Party Points",
+      "Empty": "No characters to show.",
+      "KeybindingName": "Toggle Party HUD",
+      "KeybindingHint": "Show or hide the MystiX party tracker panel.",
+      "LogLabel": "Mystic Point Log"
+    },
+    "Log": {
+      "Empty": "No Mystic Point activity yet.",
+      "Clear": "Clear log",
+      "ClearTooltip": "Clear the Mystic Point log",
+      "ByUser": "by {user}",
+      "Actions": {
+        "Spend": "spent 1 Mystic Point",
+        "Award": "+{amount} Mystic Point(s)",
+        "Remove": "−{amount} Mystic Point(s)",
+        "Refresh": "refreshed to full",
+        "FixedGrant": "+{amount} from encounter",
+        "Effect": "triggered a mystic effect",
+        "Reroll": "rerolled a check"
+      }
+    },
+    "Refresh": {
+      "Announce": "Mystic Points refreshed to full:",
+      "AnnounceFixed": "Mystic Points granted for the encounter (+{amount} each):",
+      "Manual": "Mystic Points refreshed manually for the party."
+    },
+    "EffectCard": {
+      "ChooserTitle": "Mystic Effect — {actor}",
+      "ChooserPoints": "You have {value} Mystic Point(s). Choose an effect:",
+      "SummaryBonus": "+{bonus} to checks for {rounds} round(s)",
+      "SummaryStabilize": "Removes the dying condition",
+      "SummaryMessage": "Flavor-only effect",
+      "BonusDescription": "Gains a +{bonus} circumstance bonus to checks for {rounds} round(s) (Mystic Surge).",
+      "StabilizedDescription": "Mystic energy knits flesh and spirit — the dying condition is removed.",
+      "NoConditionDescription": "Not dying — the mystic power finds no wound to mend (point spent).",
+      "MessageDescription": "{text}",
+      "UnknownEffect": "MystiX | Unknown effect.",
+      "Failed": "MystiX | Effect failed — Mystic Point refunded.",
+      "NoEffects": "MystiX | No custom effects are enabled. Ask your GM to configure them.",
+      "Refunded": "MystiX | Mystic Point refunded."
+    },
+    "Manager": {
+      "Title": "MystiX — Custom Mystic Effects",
+      "Hint": "Effects appear in the spender chooser for every character. Toggle, edit, or add your own.",
+      "Empty": "No custom effects configured yet.",
+      "EnabledTooltip": "Whether this effect appears in the spender chooser",
+      "Edit": "Edit effect",
+      "Delete": "Delete effect",
+      "Add": "Add Effect",
+      "AddTitle": "Add Mystic Effect",
+      "EditTitle": "Edit Mystic Effect — {name}",
+      "NameLabel": "Name",
+      "NamePlaceholder": "e.g., Mystic Surge",
+      "NameRequired": "MystiX | The effect needs a name.",
+      "TypeLabel": "Type",
+      "TypeHint": "Bonus adds an in-system modifier; Stabilize removes the dying condition; Message posts a chat card only.",
+      "TypeBonus": "Check bonus (FlatModifier)",
+      "TypeStabilize": "Auto-stabilize (remove dying)",
+      "TypeMessage": "Chat message only",
+      "BonusLabel": "Bonus value",
+      "BonusHint": "The circumstance bonus granted while the effect lasts.",
+      "RoundsLabel": "Duration (rounds)",
+      "RoundsHint": "How long the bonus effect lasts.",
+      "TextLabel": "Message text",
+      "TextHint": "Shown on the chat card for message-only effects.",
+      "DeleteTitle": "Delete Mystic Effect",
+      "DeleteBody": "Delete '{name}'? Players will no longer be able to choose it.",
+      "Save": "Save"
+    }
+  }
+}

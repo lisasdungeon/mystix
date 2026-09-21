@@ -1,0 +1,14 @@
+{
+  "name": "mystix",
+  "version": "0.2.6",
+  "description": "Hero Points and Mystic Points, together — a Foundry VTT module for Pathfinder 2e.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node --check scripts/main.js && node --check scripts/activity-log.js && node --check scripts/core.js && node --check scripts/settings.js && node --check scripts/sheet.js && node --check scripts/dialog.js && node --check scripts/chat.js && node --check scripts/hud.js && node --check scripts/refresh.js && node --check scripts/effects.js && node --check scripts/effect-manager.js && node --check scripts/log-viewer.js && node -e \"JSON.parse(require('fs').readFileSync('module.json','utf8')); JSON.parse(require('fs').readFileSync('lang/en.json','utf8')); console.log('JSON OK')\""
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

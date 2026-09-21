@@ -1,0 +1,41 @@
+{
+  "id": "mystix",
+  "title": "MystiX — Hero & Mystic Points",
+  "description": "Hero Points and Mystic Points, together. Adds a second, GM-awarded point pool that works like Hero Points — usable for the same rerolls and clutch saves — alongside your Hero Points on every PF2e character sheet.",    "version": "0.2.6",
+  "authors": [
+    {
+      "name": "MystiX Team",
+      "url": "https://github.com/lisasdungeon/mystix"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "manifest": "https://github.com/foundryvtt/pf2e/releases/latest/download/system.json",
+        "compatibility": {
+          "minimum": "7.1.0",
+          "verified": "7.15.4"
+        }
+      }
+    ]
+  },
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/mystix.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "https://github.com/lisasdungeon/mystix",
+  "manifest": "https://github.com/lisasdungeon/mystix/releases/latest/download/module.json",
+  "download": "https://github.com/lisasdungeon/mystix/releases/latest/download/module.zip",
+  "readme": "https://github.com/lisasdungeon/mystix#readme"
+}

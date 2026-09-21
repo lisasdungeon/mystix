@@ -1,0 +1,68 @@
+name: Release
+
+# Publish a versioned GitHub Release with a ready-to-install module zip
+# whenever a v-prefixed tag is pushed, e.g. v0.2.0.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Locate module directory
+        run: |
+          if [ -f module.json ]; then
+            echo "MODDIR=." >> "$GITHUB_ENV"
+          elif [ -f mystix/module.json ]; then
+            echo "MODDIR=mystix" >> "$GITHUB_ENV"
+          else
+            echo "module.json not found" >&2
+            exit 1
+          fi
+
+      - name: Run unit tests
+        run: cd "$MODDIR" && npm test
+
+      - name: Verify tag matches module version
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          MOD_VERSION=$(node -p "require('./${MODDIR}/module.json').version")
+          echo "tag=$TAG_VERSION module=$MOD_VERSION"
+          if [ "$TAG_VERSION" != "$MOD_VERSION" ]; then
+            echo "::error::Tag v$TAG_VERSION does not match module.json version $MOD_VERSION"
+            exit 1
+          fi
+
+      - name: Build module zip
+        run: |
+          mkdir -p dist
+          cd "$MODDIR"
+          zip -r "$GITHUB_WORKSPACE/dist/module.zip" \
+            module.json \
+            scripts \
+            styles \
+            lang \
+            templates \
+            README.md
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/module.zip
+            ${{ env.MODDIR }}/module.json
+          generate_release_notes: true
+          fail_on_unmatched_files: true

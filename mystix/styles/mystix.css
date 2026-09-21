@@ -1,0 +1,658 @@
+/* MystiX — Hero & Mystic Points */
+
+/* Mystic Point pips, styled to sit beside the system's hero-point dots. */
+.dots.mystix-points {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.dots.mystix-points .label {
+    font-size: var(--font-size-10);
+    font-weight: 600;
+    color: var(--color-text-dark-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-right: 0.15rem;
+    white-space: nowrap;
+}
+
+.dots.mystix-points .pips {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    cursor: pointer;
+}
+
+.dots.mystix-points .pips i {
+    font-size: 0.85rem;
+    color: var(--pf2e-color-purple, #6a3fa0);
+    transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.dots.mystix-points .pips i.fa-regular {
+    color: var(--color-text-dark-4, #999);
+}
+
+.dots.mystix-points .pips:hover i {
+    transform: scale(1.1);
+}
+
+/* Give mystic pips a slight arcane tint distinct from hero points. */
+.dots.mystix-points .pips i.fa-circle-m {
+    text-shadow: 0 0 3px rgba(106, 63, 160, 0.45);
+}
+
+/* ------------------------------------------------------------------ */
+/* Party HUD                                                           */
+/* ------------------------------------------------------------------ */
+
+.mystix-hud-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.25rem;
+}
+
+.mystix-hud-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--color-border-dark-5, #bbb);
+    margin-bottom: 0.25rem;
+}
+
+.mystix-hud-title {
+    font-weight: 700;
+    font-size: var(--font-size-12, 0.75rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.mystix-hud-legend {
+    display: flex;
+    gap: 0.6rem;
+    font-size: var(--font-size-10, 0.65rem);
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-hud-legend-item.hero i {
+    color: #b48c58;
+}
+
+.mystix-hud-legend-item.mystic i {
+    color: #6a3fa0;
+}
+
+.mystix-hud-row {
+    display: grid;
+    grid-template-columns: minmax(90px, 1.1fr) 1.6fr;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.2rem 0.15rem;
+    border-bottom: 1px dashed var(--color-border-dark-6, #ddd);
+}
+
+.mystix-hud-row:last-child {
+    border-bottom: none;
+}
+
+.mystix-hud-name {
+    font-weight: 600;
+    font-size: var(--font-size-11, 0.7rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mystix-hud-row[data-action="openSheet"] .mystix-hud-name {
+    cursor: pointer;
+}
+
+.mystix-hud-row[data-action="openSheet"] .mystix-hud-name:hover {
+    color: var(--color-text-hyperlink, #8a2be2);
+    text-decoration: underline;
+}
+
+/* Per-actor auto-refresh opt-out badge */
+.mystix-skip-badge {
+    font-size: 0.65rem;
+    color: var(--color-text-dark-4, #999);
+    margin-left: 0.15rem;
+}
+
+.mystix-dialog-checkbox input[type="checkbox"] {
+    width: auto;
+}
+
+.mystix-hud-points {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.mystix-hud-pool {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 1.1rem;
+}
+
+.mystix-hud-pool .pool-icon {
+    width: 1rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.mystix-hud-pool.hero .pool-icon {
+    color: #b48c58;
+}
+
+.mystix-hud-pool.mystic .pool-icon {
+    color: #6a3fa0;
+}
+
+.mystix-hud-pool .pips {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.12rem;
+    font-size: 0.78rem;
+}
+
+.mystix-hud-pool .pips.locked {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.mystix-hud-pool.hero .pips:not(.locked) {
+    cursor: pointer;
+}
+
+.mystix-hud-pool.mystic .pips {
+    cursor: pointer;
+}
+
+.mystix-hud-pool.mystic .pips i.fa-circle-m {
+    color: #6a3fa0;
+    text-shadow: 0 0 3px rgba(106, 63, 160, 0.4);
+}
+
+.mystix-hud-pool.hero .pips i.fa-circle-h {
+    color: #b48c58;
+}
+
+.mystix-hud-pool .pips i.fa-regular {
+    color: var(--color-text-dark-4, #999);
+}
+
+.mystix-hud-pool .pips:hover i {
+    transform: scale(1.12);
+}
+
+.pool-empty {
+    color: var(--color-text-dark-4, #999);
+    font-size: 0.7rem;
+    padding-left: 0.2rem;
+}
+
+.mystix-hud-quick {
+    display: inline-flex;
+    gap: 0.15rem;
+    margin-left: 0.35rem;
+}
+
+.mystix-quick-btn {
+    width: 1.15rem;
+    height: 1.15rem;
+    padding: 0;
+    line-height: 1;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    background: var(--color-bg-btn, #eee);
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    color: var(--color-text-dark-primary, #222);
+    cursor: pointer;
+}
+
+.mystix-quick-btn:hover {
+    background: #e2d5f2;
+    border-color: #6a3fa0;
+    color: #4a2a70;
+}
+
+.mystix-hud-empty {
+    padding: 0.75rem 0.25rem;
+    text-align: center;
+    font-size: var(--font-size-11, 0.7rem);
+    color: var(--color-text-dark-secondary, #555);
+    font-style: italic;
+}
+
+/* Activity log panel */
+.mystix-hud-log {
+    margin-top: 0.4rem;
+    border-top: 1px solid var(--color-border-dark-5, #bbb);
+    padding-top: 0.25rem;
+}
+
+.mystix-hud-log-header {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: var(--font-size-10, 0.65rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-dark-secondary, #555);
+    cursor: pointer;
+    user-select: none;
+}
+
+.mystix-hud-log-header:hover {
+    color: #6a3fa0;
+}
+
+.mystix-hud-log-header i {
+    font-size: 0.6rem;
+}
+
+.mystix-hud-log-clear {
+    margin-left: auto;
+    width: 1.2rem;
+    height: 1.2rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 3px;
+    background: var(--color-bg-btn, #eee);
+    cursor: pointer;
+}
+
+.mystix-hud-log-clear:hover {
+    border-color: #a33;
+    color: #a33;
+    background: rgba(170, 51, 51, 0.08);
+}
+
+.mystix-hud-log-list {
+    list-style: none;
+    margin: 0.3rem 0 0;
+    padding: 0;
+    max-height: 10rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.mystix-hud-log-entry {
+    display: flex;
+    gap: 0.4rem;
+    font-size: var(--font-size-11, 0.7rem);
+    line-height: 1.35;
+}
+
+.mystix-hud-log-entry .log-time {
+    color: var(--color-text-dark-4, #999);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+}
+
+.mystix-hud-log-entry .log-text strong {
+    color: #4a2a70;
+}
+
+.mystix-hud-log-empty {
+    font-style: italic;
+    color: var(--color-text-dark-secondary, #555);
+    font-size: var(--font-size-11, 0.7rem);
+    padding: 0.15rem 0;
+}
+
+.mystix-hud-log-count {
+    margin-left: 0.35rem;
+    font-weight: 700;
+    font-size: var(--font-size-10, 0.65rem);
+    color: #6a3fa0;
+    background: rgba(106, 63, 160, 0.1);
+    border-radius: 999px;
+    padding: 0 0.35rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* GM log viewer dialog                                                */
+/* ------------------------------------------------------------------ */
+
+.mystix-log-viewer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.mystix-log-filters {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.mystix-log-filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: var(--font-size-10, 0.65rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-log-filters select {
+    min-width: 9rem;
+}
+
+.mystix-log-count {
+    font-size: var(--font-size-11, 0.7rem);
+    color: var(--color-text-dark-secondary, #555);
+    margin-left: auto;
+}
+
+.mystix-log-export {
+    display: inline-flex;
+    gap: 0.3rem;
+}
+
+.mystix-log-export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    font-size: var(--font-size-11, 0.7rem);
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 3px;
+    background: var(--color-bg-btn, #eee);
+    cursor: pointer;
+}
+
+.mystix-log-export-btn i {
+    color: #6a3fa0;
+}
+
+.mystix-log-export-btn:hover {
+    border-color: #6a3fa0;
+    background: rgba(106, 63, 160, 0.1);
+}
+
+.mystix-log-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 20rem;
+    overflow-y: auto;
+    border-top: 1px solid var(--color-border-dark-5, #bbb);
+}
+
+.mystix-log-row {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr 1.4fr 1.2fr auto;
+    gap: 0.5rem;
+    align-items: baseline;
+    padding: 0.25rem 0.15rem;
+    border-bottom: 1px dashed var(--color-border-dark-6, #ddd);
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+.mystix-log-row:last-child {
+    border-bottom: none;
+}
+
+.mystix-log-row .mystix-log-when {
+    color: var(--color-text-dark-4, #999);
+    font-variant-numeric: tabular-nums;
+}
+
+.mystix-log-row .mystix-log-actor strong {
+    color: #4a2a70;
+}
+
+.mystix-log-row .mystix-log-user {
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-log-row .mystix-log-detail {
+    color: var(--color-text-dark-secondary, #555);
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mystix-log-none {
+    font-style: italic;
+    color: var(--color-text-dark-secondary, #555);
+    padding: 0.5rem 0.15rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Refresh announcement chat card                                      */
+/* ------------------------------------------------------------------ */
+
+.mystix-refresh-message {
+    padding: 0.1rem 0;
+}
+
+.mystix-refresh-message p {
+    margin: 0 0 0.3rem;
+    font-weight: 600;
+}
+
+.mystix-refresh-message i.fa-circle-m {
+    color: #6a3fa0;
+    margin-right: 0.25rem;
+    text-shadow: 0 0 3px rgba(106, 63, 160, 0.4);
+}
+
+.mystix-refresh-message ul {
+    margin: 0;
+    padding-left: 1.4rem;
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect chat cards                                                   */
+/* ------------------------------------------------------------------ */
+
+.mystix-effect-card {
+    border: 1px solid #6a3fa0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(106, 63, 160, 0.06);
+}
+
+.mystix-effect-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    background: linear-gradient(90deg, rgba(106, 63, 160, 0.18), rgba(106, 63, 160, 0.05));
+    border-bottom: 1px solid rgba(106, 63, 160, 0.3);
+}
+
+.mystix-effect-image {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(106, 63, 160, 0.45);
+}
+
+.mystix-effect-name {
+    font-weight: 700;
+    font-size: var(--font-size-13, 0.8rem);
+}
+
+.mystix-effect-name i {
+    color: #6a3fa0;
+    text-shadow: 0 0 3px rgba(106, 63, 160, 0.4);
+    margin-right: 0.25rem;
+}
+
+.mystix-effect-actor {
+    font-size: var(--font-size-11, 0.7rem);
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-effect-body {
+    padding: 0.45rem 0.6rem;
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+/* ------------------------------------------------------------------ */
+/* Chooser dialog                                                      */
+/* ------------------------------------------------------------------ */
+
+.mystix-chooser {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.mystix-chooser-points {
+    margin: 0 0 0.2rem;
+    font-size: var(--font-size-12, 0.75rem);
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-chooser-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    text-align: left;
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 4px;
+    background: var(--color-bg-option, #f5f0e5);
+    cursor: pointer;
+}
+
+.mystix-chooser-btn:hover {
+    border-color: #6a3fa0;
+    background: rgba(106, 63, 160, 0.08);
+}
+
+.mystix-chooser-btn i {
+    color: #6a3fa0;
+}
+
+.mystix-chooser-name {
+    font-weight: 600;
+}
+
+.mystix-chooser-summary {
+    margin-left: auto;
+    font-size: var(--font-size-11, 0.7rem);
+    color: var(--color-text-dark-secondary, #555);
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect manager + editor dialogs                                     */
+/* ------------------------------------------------------------------ */
+
+.mystix-manager-hint {
+    margin: 0 0 0.5rem;
+    font-size: var(--font-size-11, 0.7rem);
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-manager-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.25rem;
+    border-bottom: 1px dashed var(--color-border-dark-6, #ddd);
+}
+
+.mystix-manager-row:last-of-type {
+    border-bottom: none;
+}
+
+.mystix-manager-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.mystix-manager-name {
+    font-weight: 600;
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+.mystix-manager-summary {
+    font-size: var(--font-size-11, 0.7rem);
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-manager-controls {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.mystix-manager-btn,
+.mystix-hud-config {
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 3px;
+    background: var(--color-bg-btn, #eee);
+    cursor: pointer;
+}
+
+.mystix-manager-btn:hover,
+.mystix-hud-config:hover {
+    border-color: #6a3fa0;
+    background: rgba(106, 63, 160, 0.1);
+}
+
+.mystix-hud-config {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    margin-left: 0.4rem;
+}
+
+.mystix-manager-empty {
+    font-style: italic;
+    color: var(--color-text-dark-secondary, #555);
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+.mystix-manager-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+
+.mystix-manager-add,
+.mystix-manager-close {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 3px;
+    background: var(--color-bg-btn, #eee);
+    cursor: pointer;
+}
+
+.mystix-manager-add:hover {
+    border-color: #6a3fa0;
+    background: rgba(106, 63, 160, 0.1);
+}

@@ -1,0 +1,88 @@
+<div class="mystix-hud-content">
+    <header class="mystix-hud-header">
+        <span class="mystix-hud-title">{{hudTitle}}</span>
+        <span class="mystix-hud-legend">
+            <span class="mystix-hud-legend-item hero"><i class="fa-solid fa-circle-h"></i> {{heroLabel}}</span>
+            <span class="mystix-hud-legend-item mystic"><i class="fa-solid fa-circle-m"></i> {{mysticLabel}}</span>
+        </span>
+        {{#if isGMView}}
+        <button type="button" class="mystix-hud-config" data-action="mystix-effect-manager"
+            data-tooltip="Configure custom Mystic effects" aria-label="Configure custom Mystic effects">
+            <i class="fa-solid fa-gear"></i>
+        </button>
+        <button type="button" class="mystix-hud-config" data-action="open-log-viewer"
+            data-tooltip="{{logViewerTooltip}}" aria-label="{{logViewerTooltip}}">
+            <i class="fa-solid fa-clipboard-list"></i>
+        </button>
+        {{/if}}
+    </header>
+
+    {{#each rows}}
+    <div class="mystix-hud-row" data-actor-id="{{actorId}}">
+        <div class="mystix-hud-name" data-tooltip="{{tooltip}}" {{#if isGMView}}data-action="openSheet"{{/if}}>
+            {{actorName}}{{#if skipRefresh}} <i class="fa-solid fa-pause mystix-skip-badge" data-tooltip="{{skipTooltip}}"></i>{{/if}}
+        </div>
+
+        <div class="mystix-hud-points">
+            {{!-- Hero Points: click +1 / right-click −1 when the user may edit --}}
+            <div class="mystix-hud-pool hero" data-tooltip="{{heroTooltip}}">
+                <i class="fa-solid fa-circle-h pool-icon"></i>
+                <span class="pips {{#unless canEditHero}}locked{{/unless}}">
+                    {{#each heroPips}}
+                    <i class="{{cls}}" data-index="{{index}}"></i>
+                    {{/each}}
+                    {{#unless heroMax}}<span class="pool-empty">—</span>{{/unless}}
+                </span>
+            </div>
+
+            {{!-- Mystic Points: click to spend, shift-click to award one --}}
+            <div class="mystix-hud-pool mystic" data-tooltip="{{mysticTooltip}}">
+                <i class="fa-solid fa-circle-m pool-icon"></i>
+                <span class="pips">
+                    {{#each mysticPips}}
+                    <i class="{{cls}}" data-index="{{index}}"></i>
+                    {{/each}}
+                    {{#unless mysticMax}}<span class="pool-empty">—</span>{{/unless}}
+                </span>
+                {{#if isGMView}}
+                <span class="mystix-hud-quick">
+                    <button type="button" class="mystix-quick-btn" data-action="mystic-minus" data-tooltip="Remove one Mystic Point" aria-label="Remove one Mystic Point">−</button>
+                    <button type="button" class="mystix-quick-btn" data-action="mystic-plus" data-tooltip="Award one Mystic Point" aria-label="Award one Mystic Point">+</button>
+                </span>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+
+    {{#unless rows.length}}
+    <div class="mystix-hud-empty">{{emptyMessage}}</div>
+    {{/unless}}
+
+    {{!-- Activity log: collapsed by default, expanded shows the latest 8 entries --}}
+    <div class="mystix-hud-log">
+        <div class="mystix-hud-log-header" data-action="toggle-log" role="button" aria-expanded="{{logExpanded}}">
+            <i class="fa-solid {{#if logExpanded}}fa-chevron-down{{else}}fa-chevron-right{{/if}}"></i>
+            <span>{{logLabel}}</span>
+            <span class="mystix-hud-log-count">{{logCount}}</span>
+            {{#if isGMView}}
+            <button type="button" class="mystix-hud-log-clear" data-action="clear-log"
+                data-tooltip="{{clearTooltip}}" aria-label="{{clearTooltip}}">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+            {{/if}}
+        </div>
+        {{#if logExpanded}}
+        <ul class="mystix-hud-log-list">
+            {{#each logEntries}}
+            <li class="mystix-hud-log-entry">
+                <span class="log-time">{{time}}</span>
+                <span class="log-text"><strong>{{actorName}}</strong> {{action}}{{#if detail}} — {{detail}}{{/if}} {{by}}</span>
+            </li>
+            {{else}}
+            <li class="mystix-hud-log-empty">{{emptyLog}}</li>
+            {{/each}}
+        </ul>
+        {{/if}}
+    </div>
+</div>
