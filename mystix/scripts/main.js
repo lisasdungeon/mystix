@@ -17,6 +17,7 @@ import { openLogViewer } from "./log-viewer.js";
 import { refreshAllMysticPoints, refreshFixed, registerRefreshHooks, runEncounterRefresh } from "./refresh.js";
 import { closeSession, postSessionReport } from "./session-report.js";
 import { renderCharacterSheet } from "./sheet.js";
+import { addMystixSceneControls } from "./scene-controls.js";
 import { registerSettings } from "./settings.js";
 
 const SLUG = "mystix";
@@ -33,34 +34,12 @@ Hooks.once("init", () => {
 
 // Register the HUD button in the main control bar.
 Hooks.on("getSceneControlButtons", (controls) => {
-    const tokenTools = controls.find((control) => control.name === "token");
-    if (!tokenTools?.tools) return;
-    tokenTools.tools.push({
-        name: "mystix-hud",
-        title: "MYSTIX.HUD.Title",
-        icon: "fa-solid fa-circle-m",
-        onClick: () => togglePartyHUD(),
-        toggle: false,
-        button: true,
+    addMystixSceneControls(controls, {
+        isGM: game.user.isGM,
+        togglePartyHUD,
+        openEffectManager,
+        openLogViewer,
     });
-    if (game.user.isGM) {
-        tokenTools.tools.push({
-            name: "mystix-effects",
-            title: "MYSTIX.Manager.Title",
-            icon: "fa-solid fa-wand-magic-sparkles",
-            onClick: () => openEffectManager(),
-            toggle: false,
-            button: true,
-        });
-        tokenTools.tools.push({
-            name: "mystix-log",
-            title: "MYSTIX.LogViewer.OpenTooltip",
-            icon: "fa-solid fa-clipboard-list",
-            onClick: () => openLogViewer(),
-            toggle: false,
-            button: true,
-        });
-    }
 });
 
 // Keep pips and the HUD in sync on any actor change, and the activity log
@@ -102,7 +81,7 @@ Hooks.once("ready", () => {
             chooser: (actor) => openEffectChooser(actor),
             manager: () => openEffectManager(),
         },
-        version: "0.2.12",
+        version: "0.2.13",
     });
 
     // Optionally open the HUD on world load (GMs only, when enabled).

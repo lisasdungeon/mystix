@@ -163,6 +163,10 @@ The zip is directly installable in Foundry: point its manifest URL at your repo'
 
 Changelog entries use the format Foundry's package listing expects: one `### [x.y.z] — date` heading per release, newest first, with human-readable bullet points.
 
+### [0.2.13] — 2026-09-21
+
+- Fixed the scene-control hook for Foundry v14 object controls while retaining support for array-based controls.
+
 ### [0.2.12] — 2026-09-21
 
 - The sheet widget's **Mystic Points label** now uses the system's gold (bold, hardened against PF2e's own header styles) and the pips are brighter — the previous violet-on-crimson still read as too dim for some themes

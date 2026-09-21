@@ -1,7 +1,7 @@
 {
   "id": "mystix",
   "title": "MystiX — Hero & Mystic Points",
-  "description": "Hero Points and Mystic Points, together. Adds a second, GM-awarded point pool that works like Hero Points — usable for the same rerolls and clutch saves — alongside your Hero Points on every PF2e character sheet.",    "version": "0.2.12",
+  "description": "Hero Points and Mystic Points, together. Adds a second, GM-awarded point pool that works like Hero Points — usable for the same rerolls and clutch saves — alongside your Hero Points on every PF2e character sheet.",    "version": "0.2.13",
   "authors": [
     {
       "name": "MystiX Team",
