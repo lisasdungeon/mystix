@@ -12,8 +12,18 @@
 import { getMysticData, loc, spendMysticPoint, toElement } from "./core.js";
 import { recordActivity } from "./activity-log.js";
 
-/** The mythic proficiency bonus applied to Mythic Point rerolls. */
+/** The standard mythic proficiency bonus (the setting's default). */
 export const MYTHIC_PROFICIENCY_BONUS = 10;
+
+/**
+ * The configured reroll bonus. A world setting so tables can play plain
+ * rerolls (0) or any house-rule value; falls back to the standard +10.
+ * @returns {number}
+ */
+export function getMythicRerollBonus() {
+    const value = Number(game.settings?.get("mystix", "mythicRerollBonus"));
+    return Number.isFinite(value) && value >= 0 ? value : MYTHIC_PROFICIENCY_BONUS;
+}
 
 /**
  * One-shot flag marking the in-flight reroll as a Mythic Point reroll, so the
@@ -41,8 +51,11 @@ export function isMythicRerollPending() {
 export function registerChatReroll() {
     Hooks.on("getChatMessageContextOptions", (app, menuItems) => {
         if (!game.settings.get("mystix", "enableChatReroll")) return;
+        const bonus = getMythicRerollBonus();
         menuItems.push({
-            name: loc("MYSTIX.Chat.RerollMenuMythic"),
+            name: bonus > 0
+                ? loc("MYSTIX.Settings.MythicRerollBonus.MenuLabelBonus", { bonus })
+                : loc("MYSTIX.Settings.MythicRerollBonus.MenuLabel"),
             icon: "fa-solid fa-circle-m",
             condition: (element) => canRerollMessage(element),
             callback: (element) => onRerollClick(element),
@@ -122,12 +135,14 @@ export async function performMythicReroll(message) {
 export function applyMythicProficiency(_oldRoll, newRoll, heroPoint = false) {
     if (heroPoint || !pendingMythicReroll) return;
     pendingMythicReroll = false;
+    const bonus = getMythicRerollBonus();
+    if (bonus === 0) return; // plain reroll — nothing to add
     const { OperatorTerm, NumericTerm } = foundry.dice.terms;
     newRoll.terms.push(
         new OperatorTerm({ operator: "+" }),
-        new NumericTerm({ number: MYTHIC_PROFICIENCY_BONUS }),
+        new NumericTerm({ number: bonus }),
     );
-    newRoll._formula = `${newRoll._formula} + ${MYTHIC_PROFICIENCY_BONUS}`;
+    newRoll._formula = `${newRoll._formula} + ${bonus}`;
 }
 
 /**
@@ -186,9 +201,13 @@ export function injectRerollButtons(message, html) {
         );
     }
     if (mythic.value > 0) {
+        const bonus = getMythicRerollBonus();
+        const tooltip = bonus > 0
+            ? loc("MYSTIX.Settings.MythicRerollBonus.TooltipMythicBonus", { bonus })
+            : loc("MYSTIX.Settings.MythicRerollBonus.TooltipMythic");
         buttons.push(
             `<button type="button" class="mystix-reroll-btn" data-reroll="mythic" `
-            + `data-tooltip="${loc("MYSTIX.Chat.RerollTooltipMythic")}">`
+            + `data-tooltip="${tooltip}">`
             + `<i class="fa-solid fa-circle-m"></i>${loc("MYSTIX.Chat.RerollButtonMythic")}</button>`,
         );
     }

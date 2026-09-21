@@ -15,7 +15,7 @@ In current PF2e builds, the system's `mythic-points` resource is reserved for ch
 - **Auto-refresh** — optional settings refill everyone's Mythic Points when a new session starts or when each combat encounter begins (refill-to-full, or a fixed grant per encounter), with a per-character opt-out
 - **Custom mythic effects** — configurable Mythic-Point-only powers (check bonuses, auto-stabilize, flavor messages) with their own chat cards, chosen by the spender from a picker dialog
 - **GM award dialog** — right-click the pips to award or remove points, or set that character's pool size (0 hides the widget)
-- **Reroll with a Mythic Point (+10)** — reroll buttons right on check cards, or right-click → *PF2E | Reroll using a Mythic Point (+10)*. The system's own reroll implementation handles message replacement, degree-of-success recalculation, and initiative syncing; the Mythic reroll adds the mythic proficiency bonus (+10)
+- **Reroll with a Mythic Point (+10)** — reroll buttons right on check cards, or right-click → *PF2E | Reroll using a Mythic Point (+10)*. The system's own reroll implementation handles message replacement, degree-of-success recalculation, and initiative syncing; the Mythic reroll adds the mythic proficiency bonus (+10 by default — see the *Mythic Reroll Bonus* setting to change or remove it)
 - **Synced for everyone** — pips update live on all clients
 - **Activity log** — a rolling log in the party HUD of who spent, was awarded, or gained Mythic Points (with timestamps), including which mystic effect was triggered and which check was rerolled, plus a filterable GM log viewer dialog
 - **Macro API** — `game.mystix.*` for automations
@@ -57,7 +57,7 @@ await game.mystix.closeSession(); // confirm, then post the report
 
 ### As a player
 
-- **Spend on a reroll:** rerollable check cards show a *Mythic* button when the actor has points — one click spends a Mythic Point and rerolls with the +10 mythic proficiency bonus. A *Hero* button sits beside it when Hero Points are available, and both options remain in the chat card's right-click menu.
+- **Spend on a reroll:** rerollable check cards show a *Mythic* button when the actor has points — one click spends a Mythic Point and rerolls with the configured bonus (default +10, the mythic proficiency bonus; set it to 0 for a plain reroll in Settings → MystiX → Mythic Reroll Bonus). A *Hero* button sits beside it when Hero Points are available, and both options remain in the chat card's right-click menu.
 - **Trigger a mythic effect:** shift-click the Mythic pips in the party HUD. If your GM configured more than one effect, a picker shows them with one-line summaries; pick one, spend one, and the effect's chat card announces it to the table.
 - **Spend freely:** with no effects configured, left-click still spends a plain point for any table-ruled use.
 
@@ -160,6 +160,10 @@ Publishing a release is tag-driven (`.github/workflows/release.yml`):
 The zip is directly installable in Foundry: point its manifest URL at your repo's `module.json` (as in the Installation section) and players can install any published version.
 
 ## Changelog
+
+### [0.2.15] — 2026-09-21
+
+- **Mythic Reroll Bonus setting**: the bonus added to Mythic Point rerolls is now configurable per world (Settings → MystiX → *Mythic Reroll Bonus*, default **+10** — the standard mythic proficiency bonus). Set it to **0** for a plain reroll, or any house-rule value up to +20. The chat context-menu label and the on-card button tooltip always show the configured value
 
 ### [0.2.14] — 2026-09-21
 

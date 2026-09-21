@@ -1,6 +1,6 @@
 {
   "name": "mystix",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "Hero Points and Mythic Points, together — a Foundry VTT module for Pathfinder 2e.",
   "type": "module",
   "private": true,

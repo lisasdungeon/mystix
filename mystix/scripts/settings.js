@@ -28,6 +28,22 @@ export function registerSettings() {
         default: true,
     });
 
+    // Bonus added to the die on Mythic Point rerolls. 10 matches the mythic
+    // proficiency bonus; 0 gives a plain reroll for tables that prefer it.
+    game.settings.register(SLUG, "mythicRerollBonus", {
+        name: "MYSTIX.Settings.MythicRerollBonus.name",
+        hint: "MYSTIX.Settings.MythicRerollBonus.hint",
+        scope: "world",
+        config: true,
+        type: Number,
+        default: 10,
+        range: {
+            min: 0,
+            max: 20,
+            step: 1,
+        },
+    });
+
     game.settings.register(SLUG, "autoOpenHud", {
         name: "MYSTIX.Settings.AutoOpenHud.name",
         hint: "MYSTIX.Settings.AutoOpenHud.hint",

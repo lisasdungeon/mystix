@@ -23,13 +23,11 @@
       "SkipRefreshBadge": "Skips automatic Mythic Point refreshes"
     },
     "Chat": {
-      "RerollMenuMythic": "PF2E | Reroll using a Mythic Point (+10)",
       "RerollNoPoints": "{actor} has no Mythic Points to spend.",
       "RerollFailed": "MystiX | Reroll failed — Mythic Point refunded.",
       "RerollButtonHero": "Hero",
       "RerollTooltipHero": "Reroll this check using a Hero Point.",
-      "RerollButtonMythic": "Mythic",
-      "RerollTooltipMythic": "Spend a Mythic Point to reroll with the +10 mythic proficiency bonus."
+      "RerollButtonMythic": "Mythic"
     },
     "Settings": {
       "AwardDefaultMax": {
@@ -42,7 +40,15 @@
       },
       "ChatReroll": {
         "name": "Enable Mythic Reroll Context Menu",
-        "hint": "Adds a 'Reroll with Mythic Point' option to chat message context menus."
+        "hint": "Adds a 'Reroll using a Mythic Point' option to chat message context menus, plus Mythic (and Hero) reroll buttons on check cards."
+      },
+      "MythicRerollBonus": {
+        "name": "Mythic Reroll Bonus",
+        "hint": "Bonus added to the die when a Mythic Point is spent on a reroll. The standard mythic proficiency bonus is +10; set to 0 for a plain reroll.",
+        "MenuLabel": "PF2E | Reroll using a Mythic Point",
+        "MenuLabelBonus": "PF2E | Reroll using a Mythic Point (+{bonus})",
+        "TooltipMythic": "Spend a Mythic Point to reroll",
+        "TooltipMythicBonus": "Spend a Mythic Point to reroll with a +{bonus} bonus."
       },
       "AutoOpenHud": {
         "name": "Open Party HUD on World Load",

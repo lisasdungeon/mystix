@@ -81,7 +81,7 @@ Hooks.once("ready", () => {
             chooser: (actor) => openEffectChooser(actor),
             manager: () => openEffectManager(),
         },
-        version: "0.2.14",
+        version: "0.2.15",
     });
 
     // Optionally open the HUD on world load (GMs only, when enabled).

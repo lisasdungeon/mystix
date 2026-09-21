@@ -61,9 +61,15 @@ function resetPendingFlag() {
     }
 }
 
+/** Stub the world setting for the reroll bonus (default +10). */
+function setRerollBonus(value) {
+    game.settings.set("mystix", "mythicRerollBonus", value);
+}
+
 beforeEach(() => {
     createdElements.length = 0;
     resetPendingFlag();
+    setRerollBonus(10); // default for every test unless one overrides it
 });
 
 /** Build a fake message + rendered html pair with the selectors chat.js uses. */
@@ -104,6 +110,7 @@ describe("applyMythicProficiency (+10 via pf2e.preReroll)", () => {
     });
 
     it("appends +10 to a pending mythic reroll and consumes the flag", () => {
+        setRerollBonus(10);
         beginMythicReroll();
         assert.ok(isMythicRerollPending());
         const roll = { terms: [], _formula: "1d20 + 7" };
@@ -115,6 +122,39 @@ describe("applyMythicProficiency (+10 via pf2e.preReroll)", () => {
         assert.equal(roll.terms[1].number, 10);
         assert.equal(roll._formula, "1d20 + 7 + 10");
         assert.equal(isMythicRerollPending(), false, "pending flag must be one-shot");
+    });
+
+    it("applies a custom configured bonus instead of +10", () => {
+        setRerollBonus(5);
+        beginMythicReroll();
+        const roll = { terms: [], _formula: "1d20" };
+
+        applyMythicProficiency({}, roll, false);
+
+        assert.equal(roll.terms[1].number, 5);
+        assert.equal(roll._formula, "1d20 + 5");
+    });
+
+    it("adds no terms for a plain reroll (bonus 0) but still consumes the flag", () => {
+        setRerollBonus(0);
+        beginMythicReroll();
+        const roll = { terms: [], _formula: "1d20" };
+
+        applyMythicProficiency({}, roll, false);
+
+        assert.equal(roll.terms.length, 0);
+        assert.equal(roll._formula, "1d20");
+        assert.equal(isMythicRerollPending(), false, "flag consumed even with no bonus");
+    });
+
+    it("falls back to +10 when the setting is not a usable number", () => {
+        setRerollBonus(undefined);
+        beginMythicReroll();
+        const roll = { terms: [], _formula: "1d20" };
+
+        applyMythicProficiency({}, roll, false);
+
+        assert.equal(roll.terms[1].number, 10);
     });
 
     it("leaves hero-point rerolls untouched", () => {
