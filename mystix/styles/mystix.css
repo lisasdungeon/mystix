@@ -391,6 +391,108 @@
     background: rgba(106, 63, 160, 0.1);
 }
 
+/* Entries/Summary view toggle */
+.mystix-log-views {
+    display: inline-flex;
+    gap: 0.15rem;
+}
+
+.mystix-log-view-btn {
+    padding: 0.2rem 0.5rem;
+    font-size: var(--font-size-11, 0.7rem);
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 3px;
+    background: var(--color-bg-btn, #eee);
+    cursor: pointer;
+}
+
+.mystix-log-view-btn:hover {
+    border-color: #6a3fa0;
+}
+
+.mystix-log-view-btn.active {
+    background: #6a3fa0;
+    border-color: #4a2a70;
+    color: #fff;
+}
+
+/* Per-session summary view */
+.mystix-summary-session {
+    margin-bottom: 0.6rem;
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mystix-summary-head {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    background: linear-gradient(90deg, rgba(106, 63, 160, 0.15), rgba(106, 63, 160, 0.04));
+    border-bottom: 1px solid rgba(106, 63, 160, 0.3);
+    font-size: var(--font-size-11, 0.7rem);
+}
+
+.mystix-summary-head i {
+    color: #6a3fa0;
+}
+
+.mystix-summary-when {
+    font-weight: 700;
+}
+
+.mystix-summary-count {
+    margin-left: auto;
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-summary-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0.15rem 0.5rem 0.3rem;
+}
+
+.mystix-summary-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1.4fr auto;
+    gap: 0.5rem;
+    align-items: baseline;
+    padding: 0.2rem 0;
+    border-bottom: 1px dashed var(--color-border-dark-6, #ddd);
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+.mystix-summary-row:last-child {
+    border-bottom: none;
+}
+
+.mystix-summary-net {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.mystix-summary-net.up {
+    color: #2e7d32;
+}
+
+.mystix-summary-net.down {
+    color: #a33;
+}
+
+.mystix-summary-net.flat {
+    color: var(--color-text-dark-4, #999);
+}
+
+.mystix-summary-detail {
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-summary-pool {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-dark-secondary, #555);
+}
+
 .mystix-log-rows {
     list-style: none;
     margin: 0;

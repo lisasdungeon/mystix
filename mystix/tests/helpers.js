@@ -27,7 +27,23 @@ export function setupFoundryMocks() {
     const hookCalls = [];
     globalThis.game = {
         actors: [],
-        user: { isGM: true, name: "GM" },
+        user: {
+            isGM: true,
+            name: "GM",
+            // User document flags, backed by getFlag/setFlag/unsetFlag.
+            flags: {},
+            getFlag(scope, key) {
+                return this.flags?.[scope]?.[key];
+            },
+            async setFlag(scope, key, value) {
+                this.flags ??= {};
+                this.flags[scope] ??= {};
+                this.flags[scope][key] = structuredClone(value);
+            },
+            async unsetFlag(scope, key) {
+                if (this.flags?.[scope]) delete this.flags[scope][key];
+            },
+        },
         i18n: {
             format: (key, args) => {
                 let text = key;
