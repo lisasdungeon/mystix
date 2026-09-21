@@ -23,6 +23,8 @@
       "SkipRefreshBadge": "Skips automatic Mythic Point refreshes"
     },
     "Chat": {
+      "MythicIndicator": "{actor} rerolled using a Mythic Point",
+      "MythicIndicatorBonus": "{actor} rerolled using a Mythic Point (+{bonus})",
       "RerollNoPoints": "{actor} has no Mythic Points to spend.",
       "RerollFailed": "MystiX | Reroll failed — Mythic Point refunded.",
       "RerollButtonHero": "Hero",

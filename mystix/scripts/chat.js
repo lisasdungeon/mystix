@@ -62,6 +62,9 @@ export function registerChatReroll() {
         });
     });
     Hooks.on("renderChatMessage", (message, html) => {
+        // The spent-point indicator documents a past reroll, so it renders
+        // even when the context-menu setting is off.
+        applyMythicIndicator(message, html);
         if (!game.settings.get("mystix", "enableChatReroll")) return;
         injectRerollButtons(message, html);
     });
@@ -111,8 +114,12 @@ export async function performMythicReroll(message) {
     }
     beginMythicReroll();
     try {
+        // Flag the message so every client renders the Mythic indicator;
+        // `applyMythicIndicator` swaps it in on render.
+        await message.setFlag?.("mystix", "mythicReroll", getMythicRerollBonus());
         await game.pf2e.Check.rerollFromMessage(message, {});
     } catch (error) {
+        await message.unsetFlag?.("mystix", "mythicReroll").catch(() => {});
         // Refund the point rather than silently eating it on a failed reroll.
         const data = getMysticData(actor);
         await actor.update({ "flags.mystix.value": data.value + 1 });
@@ -143,6 +150,45 @@ export function applyMythicProficiency(_oldRoll, newRoll, heroPoint = false) {
         new NumericTerm({ number: bonus }),
     );
     newRoll._formula = `${newRoll._formula} + ${bonus}`;
+}
+
+/**
+ * Swap the system's generic reroll indicator for the Mythic one on cards that
+ * carry a Mythic reroll flag — the same `.reroll-indicator` icon treatment the
+ * system uses for hero-point rerolls (its dice icon becomes a glowing
+ * fa-circle-m whose tooltip says who spent the Mythic Point).
+ * @param {ChatMessage} message
+ * @param {HTMLElement|jQuery|Array} html
+ */
+export function applyMythicIndicator(message, html) {
+    const flag = message?.getFlag?.("mystix", "mythicReroll");
+    if (flag == null) return;
+    const root = toElement(html);
+    if (!root) return;
+
+    const bonus = Number(flag) || 0;
+    const actorName = message.speakerActor?.name ?? message?.author?.name ?? "?";
+    const tooltip = bonus > 0
+        ? loc("MYSTIX.Chat.MythicIndicatorBonus", { actor: actorName, bonus })
+        : loc("MYSTIX.Chat.MythicIndicator", { actor: actorName });
+
+    const indicator = root.querySelector(".reroll-indicator");
+    if (indicator) {
+        // Replace the system's dice icon in place, keeping its positioning.
+        for (const cls of [...indicator.classList]) {
+            if (cls.startsWith("fa-dice")) indicator.classList.remove(cls);
+        }
+        indicator.classList.add("fa-solid", "fa-circle-m", "mystix-reroll-indicator");
+        indicator.dataset.tooltip = tooltip;
+        return;
+    }
+
+    // The system didn't render an indicator (e.g. an older message re-rendered
+    // elsewhere) — create one at the top of the message content.
+    const icon = document.createElement("i");
+    icon.classList.add("fa-solid", "fa-circle-m", "reroll-indicator", "mystix-reroll-indicator");
+    icon.dataset.tooltip = tooltip;
+    root.querySelector(".message-content")?.prepend(icon);
 }
 
 /**

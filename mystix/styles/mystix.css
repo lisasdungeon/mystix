@@ -107,6 +107,20 @@
     box-shadow: 0 0 5px rgba(106, 63, 160, 0.55);
 }
 
+/* The system's hero-point reroll indicator, restyled for Mythic rerolls:
+ * same position/shape, arcane violet glow, fa-circle-m glyph. */
+.reroll-indicator.mystix-reroll-indicator {
+    color: #b478f0;
+    text-shadow:
+        0 0 4px rgba(180, 120, 240, 0.8),
+        0 0 9px rgba(147, 90, 220, 0.5);
+}
+
+.message-content .reroll-indicator.mystix-reroll-indicator {
+    display: inline-block;
+    margin-right: 0.4rem;
+}
+
 /* ------------------------------------------------------------------ */
 /* Party HUD                                                           */
 /* ------------------------------------------------------------------ */

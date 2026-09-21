@@ -5,10 +5,20 @@
 
 import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
+import { readFileSync } from "node:fs";
 
 import { setupFoundryMocks } from "./helpers.js";
 
 const { mockActor } = setupFoundryMocks();
+
+// Back the i18n mock with the module's real strings, so assertions on
+// localized text (indicator tooltips) check actual wording.
+const strings = JSON.parse(readFileSync(new URL("../lang/en.json", import.meta.url), "utf8")).MYSTIX;
+const lookup = (key) => key.split(".").slice(1).reduce((node, part) => node?.[part], strings);
+game.i18n.format = (key, args) => {
+    const template = lookup(key) ?? key;
+    return template.replace(/\{(\w+)\}/g, (_, name) => String(args?.[name] ?? `{${name}}`));
+};
 
 // Minimal term mocks so applyMythicProficiency can build its bonus terms.
 globalThis.foundry.dice ??= {};
@@ -33,10 +43,16 @@ class FakeElement extends globalThis.Element {
         this.children = [];
         this.innerHTML = "";
         this.listeners = {};
+        this.dataset = {};
         const classes = new Set();
-        this.classList = { add: (...names) => names.forEach((n) => classes.add(n)) };
+        this.classList = {
+            add: (...names) => names.forEach((n) => classes.add(n)),
+            remove: (...names) => names.forEach((n) => classes.delete(n)),
+            contains: (name) => classes.has(name),
+        };
     }
     append(child) { this.children.push(child); }
+    prepend(child) { this.children.unshift(child); }
     addEventListener(name, callback) { this.listeners[name] = callback; }
 }
 globalThis.document ??= {};
@@ -47,6 +63,7 @@ globalThis.document.createElement = () => {
 };
 
 const {
+    applyMythicIndicator,
     applyMythicProficiency,
     beginMythicReroll,
     injectRerollButtons,
@@ -288,6 +305,87 @@ describe("injectRerollButtons (on-card buttons)", () => {
 
         assert.deepEqual(rerollCalls, [{ heroPoint: true }]);
         assert.equal(actor.flags.mystix.value, 2, "no Mythic Point spent");
+    });
+});
+
+describe("applyMythicIndicator (spent-point flavor)", () => {
+    /** Build a message mock with flag storage, like the real document. */
+    function flaggedMessage({ bonus = 10, actorName = "Kyra" } = {}) {
+        const flags = { mystix: { mythicReroll: bonus } };
+        return {
+            getFlag: (scope, key) => flags[scope]?.[key],
+            speakerActor: { name: actorName },
+            author: { name: "Reifier" },
+        };
+    }
+
+    /** A system-style indicator: dice icon with the reroll classes. */
+    function withSystemIndicator() {
+        const { root } = fakeMessageHtml();
+        const indicator = new FakeElement();
+        indicator.classList.add2 = null; // unused shim
+        indicator.classNameSet = new Set(["fa-solid", "fa-dice-d20", "reroll-indicator"]);
+        // Bridge the classList.add-only mock to support remove()/contains.
+        const classes = indicator.classNameSet;
+        indicator.classList = {
+            add: (...names) => names.forEach((n) => classes.add(n)),
+            remove: (...names) => names.forEach((n) => classes.delete(n)),
+            contains: (n) => classes.has(n),
+            [Symbol.iterator]: () => classes[Symbol.iterator](),
+        };
+        indicator.dataset = {};
+        root.querySelector = (selector) => (selector === ".reroll-indicator" ? indicator : null);
+        return { root, indicator };
+    }
+
+    it("restyles the system's indicator in place and writes the tooltip", () => {
+        const { root, indicator } = withSystemIndicator();
+        applyMythicIndicator(flaggedMessage({ bonus: 10 }), root);
+
+        assert.ok(indicator.classList.contains("fa-circle-m"), "swapped to fa-circle-m");
+        assert.ok(!indicator.classList.contains("fa-dice-d20"), "dice glyph removed");
+        assert.ok(indicator.classList.contains("mystix-reroll-indicator"));
+        assert.equal(
+            indicator.dataset.tooltip,
+            "Kyra rerolled using a Mythic Point (+10)",
+        );
+    });
+
+    it("tooltip omits the bonus when the configured bonus is 0", () => {
+        const { root, indicator } = withSystemIndicator();
+        applyMythicIndicator(flaggedMessage({ bonus: 0 }), root);
+
+        assert.equal(indicator.dataset.tooltip, "Kyra rerolled using a Mythic Point");
+    });
+
+    it("prepends a new indicator when the system rendered none", () => {
+        const { root } = fakeMessageHtml();
+        const content = root.querySelector(".message-content");
+        applyMythicIndicator(flaggedMessage(), root);
+
+        assert.equal(content.children.length, 1, "icon prepended");
+        const icon = content.children[0];
+        assert.ok(icon.classList.contains("reroll-indicator"));
+        assert.ok(icon.classList.contains("mystix-reroll-indicator"));
+        assert.ok(icon.dataset.tooltip.includes("Kyra"));
+    });
+
+    it("does nothing to messages without the Mythic reroll flag", () => {
+        const { root } = fakeMessageHtml();
+        const content = root.querySelector(".message-content");
+        applyMythicIndicator({ getFlag: () => null, speakerActor: { name: "X" } }, root);
+
+        assert.equal(content.children.length, 0);
+    });
+
+    it("falls back to the author name when no speaker actor exists", () => {
+        const { root } = fakeMessageHtml();
+        const msg = flaggedMessage();
+        msg.speakerActor = null;
+        applyMythicIndicator(msg, root);
+
+        const icon = root.querySelector(".message-content").children[0];
+        assert.ok(icon.dataset.tooltip.includes("Reifier"));
     });
 });
 
