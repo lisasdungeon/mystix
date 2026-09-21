@@ -7,14 +7,20 @@
     gap: 0.25rem;
 }
 
+/*
+ * The widget lives on the sheet's dark crimson header, so it needs light,
+ * luminous colors — the darker arcane palette stays for the HUD and
+ * dialogs, which sit on light backgrounds.
+ */
 .dots.mystix-points .label {
     font-size: var(--font-size-10);
     font-weight: 600;
-    color: var(--color-text-dark-primary);
+    color: #f0e6d2;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-right: 0.15rem;
     white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .dots.mystix-points .pips {
@@ -25,22 +31,28 @@
 }
 
 .dots.mystix-points .pips i {
-    font-size: 0.85rem;
-    color: var(--pf2e-color-purple, #6a3fa0);
+    font-size: 0.9rem;
     transition: transform 0.1s ease, color 0.1s ease;
 }
 
 .dots.mystix-points .pips i.fa-regular {
-    color: var(--color-text-dark-4, #999);
+    color: #cdb5e8;
+    opacity: 0.85;
+}
+
+/* Filled pips glow: bright arcane violet, clearly distinct from the
+ * system's white/gold hero points on the same header. */
+.dots.mystix-points .pips i.fa-circle-m {
+    color: #c084fc;
+    text-shadow:
+        0 0 4px rgba(192, 132, 252, 0.9),
+        0 0 9px rgba(147, 90, 220, 0.55),
+        0 1px 2px rgba(0, 0, 0, 0.55);
 }
 
 .dots.mystix-points .pips:hover i {
     transform: scale(1.1);
-}
-
-/* Give mystic pips a slight arcane tint distinct from hero points. */
-.dots.mystix-points .pips i.fa-circle-m {
-    text-shadow: 0 0 3px rgba(106, 63, 160, 0.45);
+    color: #d8b4fe;
 }
 
 /* ------------------------------------------------------------------ */
@@ -121,6 +133,132 @@
     font-size: 0.65rem;
     color: var(--color-text-dark-4, #999);
     margin-left: 0.15rem;
+}
+
+/* Per-actor history popout button on HUD rows */
+.mystix-hud-history-btn {
+    width: 1.1rem;
+    height: 1.1rem;
+    padding: 0;
+    margin-left: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    border: 1px solid var(--color-border-dark-5, #bbb);
+    border-radius: 3px;
+    background: var(--color-bg-btn, #eee);
+    color: var(--color-text-dark-secondary, #555);
+    cursor: pointer;
+    vertical-align: middle;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+
+.mystix-hud-row:hover .mystix-hud-history-btn {
+    opacity: 1;
+}
+
+.mystix-hud-history-btn:hover {
+    border-color: #6a3fa0;
+    color: #6a3fa0;
+    background: rgba(106, 63, 160, 0.1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Per-actor history popout                                            */
+/* ------------------------------------------------------------------ */
+
+.mystix-actor-log {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.25rem;
+}
+
+.mystix-actor-log-summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.35rem 0.5rem;
+    background: rgba(106, 63, 160, 0.08);
+    border: 1px solid rgba(106, 63, 160, 0.3);
+    border-radius: 4px;
+    font-size: var(--font-size-11, 0.7rem);
+}
+
+.mystix-actor-log-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.mystix-actor-log-label {
+    text-transform: uppercase;
+    font-size: var(--font-size-10, 0.65rem);
+    letter-spacing: 0.04em;
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-actor-log-net {
+    font-weight: 700;
+    font-size: var(--font-size-13, 0.8rem);
+}
+
+.mystix-actor-log-net.up {
+    color: #2e7d32;
+}
+
+.mystix-actor-log-net.down {
+    color: #a33;
+}
+
+.mystix-actor-log-net.flat {
+    color: var(--color-text-dark-4, #999);
+}
+
+.mystix-actor-log-value {
+    font-weight: 600;
+}
+
+.mystix-actor-log-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 24rem;
+    overflow-y: auto;
+}
+
+.mystix-actor-log-entry {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr auto;
+    gap: 0.5rem;
+    align-items: baseline;
+    padding: 0.2rem 0.15rem;
+    border-bottom: 1px dashed var(--color-border-dark-6, #ddd);
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+.mystix-actor-log-entry:last-child {
+    border-bottom: none;
+}
+
+.mystix-actor-log-when {
+    color: var(--color-text-dark-4, #999);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.mystix-actor-log-pool {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-dark-secondary, #555);
+    white-space: nowrap;
+}
+
+.mystix-actor-log-empty {
+    font-style: italic;
+    color: var(--color-text-dark-secondary, #555);
+    padding: 0.4rem 0.15rem;
 }
 
 .mystix-dialog-checkbox input[type="checkbox"] {
@@ -541,6 +679,93 @@
     font-style: italic;
     color: var(--color-text-dark-secondary, #555);
     padding: 0.5rem 0.15rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* End-of-session report card                                          */
+/* ------------------------------------------------------------------ */
+
+.mystix-report-card {
+    border: 1px solid #6a3fa0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(106, 63, 160, 0.06);
+}
+
+.mystix-report-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    background: linear-gradient(90deg, rgba(106, 63, 160, 0.18), rgba(106, 63, 160, 0.05));
+    border-bottom: 1px solid rgba(106, 63, 160, 0.3);
+}
+
+.mystix-report-header i {
+    color: #6a3fa0;
+    font-size: 1.1rem;
+    text-shadow: 0 0 3px rgba(106, 63, 160, 0.4);
+}
+
+.mystix-report-title {
+    font-weight: 700;
+    font-size: var(--font-size-13, 0.8rem);
+}
+
+.mystix-report-when {
+    font-size: var(--font-size-11, 0.7rem);
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-12, 0.75rem);
+}
+
+.mystix-report-table th {
+    text-align: left;
+    padding: 0.25rem 0.6rem;
+    font-size: var(--font-size-10, 0.65rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-dark-secondary, #555);
+    border-bottom: 1px solid rgba(106, 63, 160, 0.3);
+}
+
+.mystix-report-table td {
+    padding: 0.25rem 0.6rem;
+    border-bottom: 1px dashed var(--color-border-dark-6, #ddd);
+}
+
+.mystix-report-table tr:last-child td {
+    border-bottom: none;
+}
+
+.mystix-report-net {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.mystix-report-net.up {
+    color: #2e7d32;
+}
+
+.mystix-report-net.down {
+    color: #a33;
+}
+
+.mystix-report-net.flat {
+    color: var(--color-text-dark-4, #999);
+}
+
+.mystix-report-detail {
+    color: var(--color-text-dark-secondary, #555);
+}
+
+.mystix-report-pool {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
 /* ------------------------------------------------------------------ */

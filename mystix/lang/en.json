@@ -96,6 +96,8 @@
       "EntriesTooltip": "Show every logged action",
       "SummaryLabel": "Summary",
       "SummaryTooltip": "Show net Mystic Point change per character for each session",
+      "DailyLabel": "Daily",
+      "DailyTooltip": "Show net Mystic Point change per character for each day",
       "SummaryRow": "Spent {spent} · Gained {gained}",
       "SummaryActions": "{count} logged actions",
       "CopyLabel": "Copy",
@@ -128,6 +130,24 @@
         "Effect": "triggered a mystic effect",
         "Reroll": "rerolled a check"
       }
+    },
+    "ActorLog": {
+      "Title": "MystiX — Mystic History: {actor}",
+      "ButtonTooltip": "View this character's full Mystic Point history",
+      "NetTotal": "Lifetime net",
+      "Spent": "Spent",
+      "Gained": "Gained",
+      "Lifetime": "Pool {first} → {last}",
+      "Empty": "No logged Mystic Point activity for this character yet."
+    },
+    "Report": {
+      "Title": "End-of-Session Mystic Report",
+      "NetHeader": "Net",
+      "DetailHeader": "Spent / Gained",
+      "PoolHeader": "Pool",
+      "EmptyLog": "MystiX | No logged Mystic Point activity to report yet.",
+      "CloseTitle": "End the Session",
+      "CloseBody": "Post the end-of-session Mystic Point report card to chat?"
     },
     "Refresh": {
       "Announce": "Mystic Points refreshed to full:",

@@ -1,0 +1,33 @@
+<div class="mystix-actor-log">
+    <div class="mystix-actor-log-summary">
+        <div class="mystix-actor-log-stat">
+            <span class="mystix-actor-log-label">{{netTotalLabel}}</span>
+            <span class="mystix-actor-log-net {{netClass}}">{{netLabel}}</span>
+        </div>
+        <div class="mystix-actor-log-stat">
+            <span class="mystix-actor-log-label">{{spentLabel}}</span>
+            <span class="mystix-actor-log-value">{{summary.spent}}</span>
+        </div>
+        <div class="mystix-actor-log-stat">
+            <span class="mystix-actor-log-label">{{gainedLabel}}</span>
+            <span class="mystix-actor-log-value">{{summary.gained}}</span>
+        </div>
+        <div class="mystix-actor-log-stat">
+            <span class="mystix-actor-log-label">{{lifetimeLabel}}</span>
+        </div>
+    </div>
+
+    {{#if rows.length}}
+    <ul class="mystix-actor-log-list">
+        {{#each rows}}
+        <li class="mystix-actor-log-entry">
+            <span class="mystix-actor-log-when">{{when}}</span>
+            <span class="mystix-actor-log-action">{{action}}{{#if detail}} — {{detail}}{{/if}}</span>
+            <span class="mystix-actor-log-pool">{{#if pool}}{{pool}}{{else}}—{{/if}}</span>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p class="mystix-actor-log-empty">{{empty}}</p>
+    {{/if}}
+</div>

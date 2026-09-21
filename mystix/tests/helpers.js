@@ -66,10 +66,19 @@ export function setupFoundryMocks() {
             emit: (name, data) => socketSent.push({ name, data }),
         },
     };
-    // Foundry helper library used by the modules under test.
+    // Foundry helper library used by the modules under test. ApplicationV2
+    // stubs let modules define ApplicationV2 classes at import time.
+    class MockApplicationV2 {
+        constructor(options = {}) {
+            this.options = options;
+        }
+    }
     globalThis.foundry = {
         applications: {
-            api: {},
+            api: {
+                ApplicationV2: MockApplicationV2,
+                HandlebarsApplicationMixin: (Base) => class extends Base {},
+            },
         },
     };
     // Foundry helpers used by the modules under test.

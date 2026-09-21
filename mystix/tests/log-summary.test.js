@@ -10,7 +10,7 @@ import { setupFoundryMocks } from "./helpers.js";
 
 setupFoundryMocks();
 
-const { cleanLogFilters, groupLogBySession, summarizeSession } = await import("../scripts/log-viewer.js");
+const { cleanLogFilters, groupLogByDay, groupLogBySession, summarizeSession } = await import("../scripts/log-viewer.js");
 
 const MIN = 60 * 1000;
 
@@ -99,10 +99,42 @@ describe("summarizeSession", () => {
 });
 
 describe("view-mode persistence", () => {
-    it("cleanLogFilters keeps only a valid summary view flag", () => {
+    it("cleanLogFilters keeps only valid view flags", () => {
         assert.equal(cleanLogFilters({ view: "summary" }).view, "summary");
+        assert.equal(cleanLogFilters({ view: "daily" }).view, "daily");
         assert.equal(cleanLogFilters({ view: "entries" }).view, "");
         assert.equal(cleanLogFilters({ view: 7 }).view, "");
         assert.equal(cleanLogFilters({}).view, "");
+    });
+});
+
+describe("groupLogByDay", () => {
+    it("groups entries by local calendar day, oldest first", () => {
+        const log = [
+            entry(new Date(2026, 8, 21, 10, 0).getTime(), "Kyra", 0, 1),
+            entry(new Date(2026, 8, 20, 22, 0).getTime(), "Kyra", 1, 2), // 22:00
+            entry(new Date(2026, 8, 20, 19, 0).getTime(), "Ezren", 2, 1), // 19:00
+        ];
+        const days = groupLogByDay(log);
+        assert.equal(days.length, 2);
+        assert.equal(days[0].day, "2026-09-20");
+        assert.equal(days[1].day, "2026-09-21");
+        assert.equal(days[0].entries.length, 2); // 19:00 and 22:00, chronological
+        assert.equal(days[0].entries[0].from, 2);
+    });
+
+    it("splits entries that straddle local midnight", () => {
+        const log = [
+            entry(new Date(2026, 8, 21, 0, 1).getTime(), "Kyra", 1, 0), // newest
+            entry(new Date(2026, 8, 20, 23, 59).getTime(), "Kyra", 0, 1),
+        ];
+        const days = groupLogByDay(log);
+        assert.equal(days.length, 2);
+        assert.equal(days[0].day, "2026-09-20");
+        assert.equal(days[1].day, "2026-09-21");
+    });
+
+    it("handles empty logs", () => {
+        assert.deepEqual(groupLogByDay([]), []);
     });
 });

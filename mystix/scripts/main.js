@@ -5,6 +5,7 @@
  * floating party tracker HUD.
  */
 
+import { openActorLog } from "./actor-log.js";
 import { awardMysticPoints, getMysticData, getSkipRefresh, setMysticData, setSkipRefresh, spendMysticPoint } from "./core.js";
 import { clearLog, getLog, registerActivityLog } from "./activity-log.js";
 import { registerChatReroll } from "./chat.js";
@@ -14,6 +15,7 @@ import { getEnabledEffects, openEffectChooser, triggerEffect } from "./effects.j
 import { refreshPartyHUD, registerKeybinding, togglePartyHUD } from "./hud.js";
 import { openLogViewer } from "./log-viewer.js";
 import { refreshAllMysticPoints, refreshFixed, registerRefreshHooks, runEncounterRefresh } from "./refresh.js";
+import { closeSession, postSessionReport } from "./session-report.js";
 import { renderCharacterSheet } from "./sheet.js";
 import { registerSettings } from "./settings.js";
 
@@ -91,13 +93,16 @@ Hooks.once("ready", () => {
             clear: () => clearLog(),
             view: () => openLogViewer(),
         },
+        report: (options) => postSessionReport(options),
+        closeSession: (options) => closeSession(options),
+        actorLog: (actor) => openActorLog(actor),
         effects: {
             list: () => getEnabledEffects(),
             trigger: (actor, key, options) => triggerEffect(actor, key, options),
             chooser: (actor) => openEffectChooser(actor),
             manager: () => openEffectManager(),
         },
-        version: "0.2.8",
+        version: "0.2.11",
     });
 
     // Optionally open the HUD on world load (GMs only, when enabled).

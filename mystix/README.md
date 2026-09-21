@@ -41,11 +41,13 @@ Requires Foundry VTT v13+ and the Pathfinder 2e game system (v7.1+).
 await game.mystix.log.clear();
 const entries = game.mystix.log.get(); // newest first
 game.mystix.log.view(); // open the GM log viewer dialog
+await game.mystix.report(); // post the end-of-session report card
+await game.mystix.closeSession(); // confirm, then post the report
 ```
 
 - **Log viewer (GM):** open the full log from the 📋 button in the token control bar, the 📋 button on the party HUD header, or `game.mystix.log.view()`. A resizable dialog lists every entry with its full date and time and a detail column, and filters by **character**, **action type** (spend / award / remove / refresh / fixed grant / effect / reroll / refunded), and **user** — so you can answer "who spent what while I was running the shopkeep?" in two clicks. The filters combine, a live counter shows how many entries match, and the list updates by itself while the dialog is open. Your last-used filters are **remembered per user** (stored on your own user record) and restored whenever you reopen the viewer — later in the session or after a restart.
 
-- **Summary view:** toggle *Entries* / *Summary* at the top of the viewer. The summary groups the log into play sessions (split whenever 30 minutes pass with no activity) and shows, per character per session: the **net Mystic Point change** (green +, red −), total spent vs. gained, and the start → end pool. Filtering by character narrows the summary to that character; action and user filters are ignored in this view since raw pool values would otherwise be misleading. The view choice is remembered with your filters. **Export:** *Copy* puts the filtered entries on your clipboard and *Download CSV* saves a `mystix-log-YYYY-MM-DD.csv` file — both export exactly what the filters show (RFC 4180 CSV with ISO timestamps plus locale date/time, action labels, pool values, detail, and user), ready for post-session review in any spreadsheet.
+- **Summary view:** toggle *Entries* / *Summary* / *Daily* at the top of the viewer. The summary shows, per character per group: the **net Mystic Point change** (green +, red −), total spent vs. gained, and the start → end pool. *Summary* groups into play sessions (split whenever 30 minutes pass with no activity); *Daily* groups by calendar day. Filtering by character narrows the summary to that character; action and user filters are ignored in both summary views since raw pool values would otherwise be misleading. The view choice is remembered with your filters. **Export:** *Copy* puts the filtered entries on your clipboard and *Download CSV* saves a `mystix-log-YYYY-MM-DD.csv` file — both export exactly what the filters show (RFC 4180 CSV with ISO timestamps plus locale date/time, action labels, pool values, detail, and user), ready for post-session review in any spreadsheet.
 - The world default max (Settings → MystiX → *Default Max Mystic Points*) applies to characters that haven't had an explicit max set.
 - **Skip auto-refresh:** the award dialog's *Skip auto-refresh* checkbox excludes that character from the automatic refreshes below — useful for story reasons, an absent player, or a character whose pool should stay frozen. The party HUD shows a ⏸ badge on opted-out characters. Manual awarding and spending are never affected.
 - **Auto-refresh:** enable *Refresh Mystic Points on Session Start* (refills everyone once per calendar day when the world loads — reloading mid-session won't top anyone up again) and/or *Refresh Mystic Points on Encounter Start*. Refreshed characters are announced in chat.
@@ -160,6 +162,20 @@ The zip is directly installable in Foundry: point its manifest URL at your repo'
 ## Changelog
 
 Changelog entries use the format Foundry's package listing expects: one `### [x.y.z] — date` heading per release, newest first, with human-readable bullet points.
+
+### [0.2.11] — 2026-09-21
+
+- **Per-actor history popout**: a 🕘 button on each party HUD row (GM) opens the character's full logged Mystic Point history — lifetime net, spent vs. gained, pool progression, and every entry chronologically. Also `game.mystix.actorLog(actor)`
+- The sheet widget's Mystic pips now **glow** (light luminous violet with a soft halo) so they stand out clearly on the dark sheet header instead of blending into it
+
+### [0.2.10] — 2026-09-21
+
+- **End-of-session report card**: a styled chat card summarizing the latest session's per-character net Mystic Point change, spent vs. gained, and start → end pool. Post it from the 📜 button on the party HUD or `game.mystix.report()`; `game.mystix.closeSession()` posts the card and is a natural "end of session" ritual
+
+### [0.2.9] — 2026-09-21
+
+- New **Daily summary** in the log viewer: per-character net Mystic Point change grouped by calendar day, alongside the existing per-session grouping
+- Zip verification before release publishing (byte-identical embedded manifest, tag match, no dev files)
 
 ### [0.2.8] — 2026-09-21
 

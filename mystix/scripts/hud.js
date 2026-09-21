@@ -11,6 +11,8 @@ import { awardMysticPoints, getMysticData, getSkipRefresh, loc, toElement } from
 import { openEffectChooser } from "./effects.js";
 import { openEffectManager } from "./effect-manager.js";
 import { openLogViewer } from "./log-viewer.js";
+import { openActorLog } from "./actor-log.js";
+import { postSessionReport } from "./session-report.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -57,6 +59,8 @@ class MystiXPartyHUD extends HandlebarsApplicationMixin(ApplicationV2) {
             "toggle-log": MystiXPartyHUD.#onToggleLog,
             "clear-log": MystiXPartyHUD.#onClearLog,
             "open-log-viewer": MystiXPartyHUD.#onOpenLogViewer,
+            "session-report": MystiXPartyHUD.#onSessionReport,
+            "actor-history": MystiXPartyHUD.#onActorHistory,
         },
     };
 
@@ -115,6 +119,8 @@ class MystiXPartyHUD extends HandlebarsApplicationMixin(ApplicationV2) {
         context.clearLabel = loc("MYSTIX.Log.Clear");
         context.clearTooltip = loc("MYSTIX.Log.ClearTooltip");
         context.logViewerTooltip = loc("MYSTIX.LogViewer.OpenTooltip");
+        context.reportTooltip = loc("MYSTIX.Report.Title");
+        context.historyTooltip = loc("MYSTIX.ActorLog.ButtonTooltip");
         context.logEntries = this.#logExpanded
             ? filterLogData(getLog(), 8).map((entry) => ({
                 time: formatTime(entry.at),
@@ -209,6 +215,17 @@ class MystiXPartyHUD extends HandlebarsApplicationMixin(ApplicationV2) {
     /** Open the GM log viewer dialog. */
     static async #onOpenLogViewer() {
         await openLogViewer();
+    }
+
+    /** Post the end-of-session report card. */
+    static async #onSessionReport() {
+        await postSessionReport();
+    }
+
+    /** Open one character's Mystic Point history popout. */
+    static async #onActorHistory(_event, target) {
+        const actor = MystiXPartyHUD.#actorFromRow(target);
+        if (actor) await openActorLog(actor);
     }
 
     static #instance() {

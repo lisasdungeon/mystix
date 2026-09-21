@@ -10,6 +10,10 @@
             data-tooltip="Configure custom Mystic effects" aria-label="Configure custom Mystic effects">
             <i class="fa-solid fa-gear"></i>
         </button>
+        <button type="button" class="mystix-hud-config" data-action="session-report"
+            data-tooltip="{{reportTooltip}}" aria-label="{{reportTooltip}}">
+            <i class="fa-solid fa-scroll"></i>
+        </button>
         <button type="button" class="mystix-hud-config" data-action="open-log-viewer"
             data-tooltip="{{logViewerTooltip}}" aria-label="{{logViewerTooltip}}">
             <i class="fa-solid fa-clipboard-list"></i>
@@ -21,6 +25,10 @@
     <div class="mystix-hud-row" data-actor-id="{{actorId}}">
         <div class="mystix-hud-name" data-tooltip="{{tooltip}}" {{#if isGMView}}data-action="openSheet"{{/if}}>
             {{actorName}}{{#if skipRefresh}} <i class="fa-solid fa-pause mystix-skip-badge" data-tooltip="{{skipTooltip}}"></i>{{/if}}
+            {{#if isGMView}}<button type="button" class="mystix-hud-history-btn" data-action="actor-history"
+                data-tooltip="{{historyTooltip}}" aria-label="{{historyTooltip}}">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </button>{{/if}}
         </div>
 
         <div class="mystix-hud-points">

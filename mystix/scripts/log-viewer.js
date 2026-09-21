@@ -54,7 +54,7 @@ export function cleanLogFilters(stored) {
         actorName: pick(source.actorName),
         action: pick(source.action),
         userName: pick(source.userName),
-        view: source.view === "summary" ? "summary" : "",
+        view: source.view === "summary" || source.view === "daily" ? source.view : "",
     };
 }
 
@@ -110,9 +110,36 @@ export function groupLogBySession(log, gapMs = 30 * 60 * 1000) {
 }
 
 /**
- * Per-actor Mystic Point accounting for one session: net change (spends
- * negative, gains positive), spent/gained totals, and the start→end pool.
- * Start is the `from` of the earliest logged action (null when unknown).
+ * Group a newest-first log by local calendar day. The result is
+ * chronological (oldest day first), each group's entries chronological.
+ * @param {object[]} log Newest-first log entries.
+ * @returns {Array<{day: string, start: number, end: number, entries: object[]}>}
+ */
+export function groupLogByDay(log) {
+    const days = [];
+    let current = null;
+    for (let i = log.length - 1; i >= 0; i -= 1) {
+        const entry = log[i];
+        const at = Number(entry.at);
+        const stamp = Number.isFinite(at) ? at : 0;
+        const day = csvDate(stamp);
+        if (!current || current.day !== day) {
+            if (current) days.push(current);
+            current = { day, start: stamp, end: stamp, entries: [entry] };
+        } else {
+            current.end = stamp;
+            current.entries.push(entry);
+        }
+    }
+    if (current) days.push(current);
+    return days;
+}
+
+/**
+ * Per-actor Mystic Point accounting for one session (or day): net change
+ * (spends negative, gains positive), spent/gained totals, and the
+ * start→end pool. Start is the `from` of the earliest logged action
+ * (null when unknown).
  * @param {object[]} entries Chronological session entries.
  * @returns {Array<{actorName: string, net: number, spent: number,
  *   gained: number, start: number|null, end: number|null}>}
@@ -123,7 +150,7 @@ export function summarizeSession(entries) {
         const name = entry.actorName ?? "Unknown";
         const stat = stats.get(name)
             ?? { actorName: name, net: 0, spent: 0, gained: 0, start: null, end: null };
-        const delta = deltaOf(entry);
+        const delta = entryDelta(entry);
         stat.net += delta;
         if (delta < 0) stat.spent += -delta;
         else if (delta > 0) stat.gained += delta;
@@ -137,7 +164,7 @@ export function summarizeSession(entries) {
 }
 
 /** Net pool change of one log entry; unknown-shaped entries count as 0. */
-function deltaOf(entry) {
+export function entryDelta(entry) {
     // null/undefined from/to mean "not recorded" (Number(null) is 0, which
     // would silently corrupt the math) — fall back to the signed amount.
     if (entry.from != null && entry.to != null) {
@@ -204,7 +231,7 @@ function isoTimestamp(timestamp) {
 }
 
 /** Locale YYYY-MM-DD for a log entry, blank when missing/invalid. */
-function csvDate(timestamp) {
+export function csvDate(timestamp) {
     const date = new Date(Number(timestamp));
     if (!Number.isFinite(date.getTime())) return "";
     const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -213,7 +240,7 @@ function csvDate(timestamp) {
 }
 
 /** Locale HH:MM for a log entry, blank when missing/invalid. */
-function csvTime(timestamp) {
+export function csvTime(timestamp) {
     const date = new Date(Number(timestamp));
     if (!Number.isFinite(date.getTime())) return "";
     const hh = String(date.getHours()).padStart(2, "0");
@@ -346,7 +373,8 @@ export async function openLogViewer() {
     let selectedActor = saved.actorName;
     let selectedAction = saved.action;
     let selectedUser = saved.userName;
-    let viewMode = saved.view === "summary" ? "summary" : "entries";
+    const savedView = saved.view;
+    let viewMode = savedView === "summary" || savedView === "daily" ? savedView : "entries";
 
     const dialog = new DialogV2({
         window: { title: loc("MYSTIX.LogViewer.Title"), resizable: true },
@@ -409,7 +437,8 @@ export async function openLogViewer() {
         // View toggle: per-entry list or per-session summary.
         for (const button of root.querySelectorAll("[data-view-mode]")) {
             button.addEventListener("click", () => {
-                viewMode = button.dataset.viewMode === "summary" ? "summary" : "entries";
+                const chosen = button.dataset.viewMode;
+                viewMode = chosen === "summary" || chosen === "daily" ? chosen : "entries";
                 void saveLogFilters({ actorName: selectedActor, action: selectedAction, userName: selectedUser, view: viewMode });
                 paint();
             });
@@ -486,6 +515,10 @@ function buildContent(log, { selectedActor, selectedAction, selectedUser, viewMo
                     data-view-mode="summary" data-tooltip="${escapeHtml(loc("MYSTIX.LogViewer.SummaryTooltip"))}">
                     ${escapeHtml(loc("MYSTIX.LogViewer.SummaryLabel"))}
                 </button>
+                <button type="button" class="mystix-log-view-btn ${viewMode === "daily" ? "active" : ""}"
+                    data-view-mode="daily" data-tooltip="${escapeHtml(loc("MYSTIX.LogViewer.DailyTooltip"))}">
+                    ${escapeHtml(loc("MYSTIX.LogViewer.DailyLabel"))}
+                </button>
             </span>
             <span class="mystix-log-count">${loc("MYSTIX.LogViewer.ShowingCount", { count: entries.length })}</span>
             <span class="mystix-log-export">
@@ -500,29 +533,35 @@ function buildContent(log, { selectedActor, selectedAction, selectedUser, viewMo
             </span>
         </div>
         ${
-            viewMode === "summary"
-                ? renderSummary(log, { selectedActor, selectedAction, selectedUser })
-                : entries.length
+            viewMode === "entries"
+                ? entries.length
                     ? `<ul class="mystix-log-rows">${rows}</ul>`
                     : `<p class="mystix-log-none">${loc("MYSTIX.LogViewer.NoMatches")}</p>`
+                : renderSummary(log, { selectedActor, viewMode })
         }
     `;
 }
 
 /**
- * Render the per-session, per-actor summary body: sessions split by the
- * 30-minute activity gap, each listing every character's net change.
+ * Render the grouped, per-actor summary body. Two groupings: play
+ * sessions split by the 30-minute activity gap (viewMode "summary") or
+ * local calendar days (viewMode "daily"). Each group lists every
+ * character's net change.
  * @param {object[]} log Newest-first log entries.
- * @param {{selectedActor: string, selectedAction: string, selectedUser: string}} state
+ * @param {{selectedActor: string, viewMode: string}} state
  */
-function renderSummary(log, { selectedActor, selectedAction, selectedUser }) {
+function renderSummary(log, { selectedActor, viewMode }) {
     // The summary reads raw from/to pool values, so action and user filters
     // would corrupt the math; only the character filter narrows the view.
     const filtered = selectedActor ? log.filter((entry) => entry.actorName === selectedActor) : log;
-    const sessions = groupLogBySession(filtered).reverse();
-    const parts = sessions.map((session) => {
-        const when = `${csvDate(session.start)} ${csvTime(session.start)}–${csvTime(session.end)}`;
-        const rows = summarizeSession(session.entries)
+    const groups = viewMode === "daily"
+        ? groupLogByDay(filtered)
+        : groupLogBySession(filtered).reverse();
+    const parts = groups.map((group) => {
+        const when = viewMode === "daily"
+            ? group.day
+            : `${csvDate(group.start)} ${csvTime(group.start)}–${csvTime(group.end)}`;
+        const rows = summarizeSession(group.entries)
             .map((stat) => `
                 <li class="mystix-summary-row">
                     <span class="mystix-summary-actor"><strong>${escapeHtml(stat.actorName)}</strong></span>
@@ -539,7 +578,7 @@ function renderSummary(log, { selectedActor, selectedAction, selectedUser }) {
                     <i class="fa-solid fa-circle-m"></i>
                     <span class="mystix-summary-when">${escapeHtml(when)}</span>
                     <span class="mystix-summary-count">${escapeHtml(
-                        loc("MYSTIX.LogViewer.SummaryActions", { count: session.entries.length }),
+                        loc("MYSTIX.LogViewer.SummaryActions", { count: group.entries.length }),
                     )}</span>
                 </div>
                 <ul class="mystix-summary-rows">${rows}</ul>
