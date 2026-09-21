@@ -1,5 +1,5 @@
 /**
- * MystiX — custom mystic-only effects.
+ * MystiX — custom mythic-only effects.
  *
  * The GM defines a registry of effects in world settings (Mystic Surge,
  * Mystic Mending, or their own). Players pick one via a chooser dialog when

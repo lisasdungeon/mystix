@@ -7,7 +7,7 @@
         </span>
         {{#if isGMView}}
         <button type="button" class="mystix-hud-config" data-action="mystix-effect-manager"
-            data-tooltip="Configure custom Mystic effects" aria-label="Configure custom Mystic effects">
+            data-tooltip="Configure custom Mythic effects" aria-label="Configure custom Mythic effects">
             <i class="fa-solid fa-gear"></i>
         </button>
         <button type="button" class="mystix-hud-config" data-action="session-report"
@@ -43,7 +43,7 @@
                 </span>
             </div>
 
-            {{!-- Mystic Points: click to spend, shift-click to award one --}}
+            {{!-- Mythic Points: click to add one, right-click to remove, shift-click for effects --}}
             <div class="mystix-hud-pool mystic" data-tooltip="{{mysticTooltip}}">
                 <i class="fa-solid fa-circle-m pool-icon"></i>
                 <span class="pips">
@@ -54,8 +54,8 @@
                 </span>
                 {{#if isGMView}}
                 <span class="mystix-hud-quick">
-                    <button type="button" class="mystix-quick-btn" data-action="mystic-minus" data-tooltip="Remove one Mystic Point" aria-label="Remove one Mystic Point">−</button>
-                    <button type="button" class="mystix-quick-btn" data-action="mystic-plus" data-tooltip="Award one Mystic Point" aria-label="Award one Mystic Point">+</button>
+                    <button type="button" class="mystix-quick-btn" data-action="mystic-minus" data-tooltip="Remove one Mythic Point" aria-label="Remove one Mythic Point">−</button>
+                    <button type="button" class="mystix-quick-btn" data-action="mystic-plus" data-tooltip="Award one Mythic Point" aria-label="Award one Mythic Point">+</button>
                 </span>
                 {{/if}}
             </div>

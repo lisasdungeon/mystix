@@ -1,8 +1,8 @@
-# MystiX — Hero & Mystic Points for Pathfinder 2e
+# MystiX — Hero & Mythic Points for Pathfinder 2e
 
-A Foundry Virtual Tabletop module for the **Pathfinder 2e** system that puts **Hero Points and Mystic Points on every character sheet, together**.
+A Foundry Virtual Tabletop module for the **Pathfinder 2e** system that puts **Hero Points and Mythic Points on every character sheet, together**.
 
-Mystic Points are a second, GM-awarded pool that works just like Hero Points: spend one to reroll a check, or use them for any Hero-Point-style ruling your table makes.
+Mythic Points are a second, GM-awarded pool that works just like Hero Points: spend one to reroll a check, or use them for any Hero-Point-style ruling your table makes.
 
 ## Why
 
@@ -10,14 +10,14 @@ In current PF2e builds, the system's `mythic-points` resource is reserved for ch
 
 ## Features
 
-- **Mystic Point pips** on every PF2e character sheet header, right next to Hero Points
-- **Floating party HUD** — every character's Hero and Mystic Points at a glance, with GM quick-award (+/−) buttons
-- **Auto-refresh** — optional settings refill everyone's Mystic Points when a new session starts or when each combat encounter begins (refill-to-full, or a fixed grant per encounter), with a per-character opt-out
-- **Custom mystic effects** — configurable Mystic-Point-only powers (check bonuses, auto-stabilize, flavor messages) with their own chat cards, chosen by the spender from a picker dialog
+- **Mythic Point pips** on every PF2e character sheet header, right next to Hero Points
+- **Floating party HUD** — every character's Hero and Mythic Points at a glance, with GM quick-award (+/−) buttons
+- **Auto-refresh** — optional settings refill everyone's Mythic Points when a new session starts or when each combat encounter begins (refill-to-full, or a fixed grant per encounter), with a per-character opt-out
+- **Custom mythic effects** — configurable Mythic-Point-only powers (check bonuses, auto-stabilize, flavor messages) with their own chat cards, chosen by the spender from a picker dialog
 - **GM award dialog** — right-click the pips to award or remove points, or set that character's pool size (0 hides the widget)
-- **Reroll with Mystic Point** — right-click any chat card for a native reroll: the system's own reroll implementation handles message replacement, degree-of-success recalculation, and initiative syncing
+- **Reroll with a Mythic Point (+10)** — reroll buttons right on check cards, or right-click → *PF2E | Reroll using a Mythic Point (+10)*. The system's own reroll implementation handles message replacement, degree-of-success recalculation, and initiative syncing; the Mythic reroll adds the mythic proficiency bonus (+10)
 - **Synced for everyone** — pips update live on all clients
-- **Activity log** — a rolling log in the party HUD of who spent, was awarded, or gained Mystic Points (with timestamps), including which mystic effect was triggered and which check was rerolled, plus a filterable GM log viewer dialog
+- **Activity log** — a rolling log in the party HUD of who spent, was awarded, or gained Mythic Points (with timestamps), including which mystic effect was triggered and which check was rerolled, plus a filterable GM log viewer dialog
 - **Macro API** — `game.mystix.*` for automations
 
 ## Installation
@@ -33,9 +33,9 @@ Requires Foundry VTT v13+ and the Pathfinder 2e game system (v7.1+).
 
 ### As the GM
 
-- **Award points:** right-click the Mystic Point pips on any character sheet (or use the Actors directory). Enter a positive number to award, negative to remove, and set that character's max pool size.
-- **Party HUD:** toggle it with `Shift+H`, the 🜂 button in the token control bar, or the macro API. Every character's Hero and Mystic Points are shown together; the **+ / −** buttons next to each Mystic pool award or remove points instantly. Click a character's name to open their sheet.
-- **Activity log:** the *Mystic Point Log* panel at the bottom of the party HUD records who spent, was awarded, or gained Mystic Points from refreshes — with timestamps and the user behind each change (so a player spend and a GM award are distinguishable). Effect triggers show the effect name (*triggered a mystic effect — Mystic Surge*), rerolls show the check (*rerolled a check — Strike*), and a refunded trigger after a failure is logged too, so the ledger always balances against the pools. It keeps the most recent 200 entries; the GM can clear it with the trash button. Player-side spends are relayed to the GM client, so there's a single authoritative log. GMs can also read or wipe it via macros:
+- **Award points:** right-click the Mythic Point pips on any character sheet (or use the Actors directory). Enter a positive number to award, negative to remove, and set that character's max pool size.
+- **Party HUD:** toggle it with `Shift+H`, the 🜂 button in the token control bar, or the macro API. Every character's Hero and Mythic Points are shown together; the **+ / −** buttons next to each Mythic pool award or remove points instantly. Click a character's name to open their sheet; the Mythic pips themselves add (click) or remove (right-click) one.
+- **Activity log:** the *Mythic Point Log* panel at the bottom of the party HUD records who spent, was awarded, or gained Mythic Points from refreshes — with timestamps and the user behind each change (so a player spend and a GM award are distinguishable). Effect triggers show the effect name (*triggered a mystic effect — Mythic Surge*), rerolls show the check (*rerolled a check — Strike*), and a refunded trigger after a failure is logged too, so the ledger always balances against the pools. It keeps the most recent 200 entries; the GM can clear it with the trash button. Player-side spends are relayed to the GM client, so there's a single authoritative log. GMs can also read or wipe it via macros:
 
 ```js
 await game.mystix.log.clear();
@@ -47,23 +47,23 @@ await game.mystix.closeSession(); // confirm, then post the report
 
 - **Log viewer (GM):** open the full log from the 📋 button in the token control bar, the 📋 button on the party HUD header, or `game.mystix.log.view()`. A resizable dialog lists every entry with its full date and time and a detail column, and filters by **character**, **action type** (spend / award / remove / refresh / fixed grant / effect / reroll / refunded), and **user** — so you can answer "who spent what while I was running the shopkeep?" in two clicks. The filters combine, a live counter shows how many entries match, and the list updates by itself while the dialog is open. Your last-used filters are **remembered per user** (stored on your own user record) and restored whenever you reopen the viewer — later in the session or after a restart.
 
-- **Summary view:** toggle *Entries* / *Summary* / *Daily* at the top of the viewer. The summary shows, per character per group: the **net Mystic Point change** (green +, red −), total spent vs. gained, and the start → end pool. *Summary* groups into play sessions (split whenever 30 minutes pass with no activity); *Daily* groups by calendar day. Filtering by character narrows the summary to that character; action and user filters are ignored in both summary views since raw pool values would otherwise be misleading. The view choice is remembered with your filters. **Export:** *Copy* puts the filtered entries on your clipboard and *Download CSV* saves a `mystix-log-YYYY-MM-DD.csv` file — both export exactly what the filters show (RFC 4180 CSV with ISO timestamps plus locale date/time, action labels, pool values, detail, and user), ready for post-session review in any spreadsheet.
-- The world default max (Settings → MystiX → *Default Max Mystic Points*) applies to characters that haven't had an explicit max set.
+- **Summary view:** toggle *Entries* / *Summary* / *Daily* at the top of the viewer. The summary shows, per character per group: the **net Mythic Point change** (green +, red −), total spent vs. gained, and the start → end pool. *Summary* groups into play sessions (split whenever 30 minutes pass with no activity); *Daily* groups by calendar day. Filtering by character narrows the summary to that character; action and user filters are ignored in both summary views since raw pool values would otherwise be misleading. The view choice is remembered with your filters. **Export:** *Copy* puts the filtered entries on your clipboard and *Download CSV* saves a `mystix-log-YYYY-MM-DD.csv` file — both export exactly what the filters show (RFC 4180 CSV with ISO timestamps plus locale date/time, action labels, pool values, detail, and user), ready for post-session review in any spreadsheet.
+- The world default max (Settings → MystiX → *Default Max Mythic Points*) applies to characters that haven't had an explicit max set.
 - **Skip auto-refresh:** the award dialog's *Skip auto-refresh* checkbox excludes that character from the automatic refreshes below — useful for story reasons, an absent player, or a character whose pool should stay frozen. The party HUD shows a ⏸ badge on opted-out characters. Manual awarding and spending are never affected.
-- **Auto-refresh:** enable *Refresh Mystic Points on Session Start* (refills everyone once per calendar day when the world loads — reloading mid-session won't top anyone up again) and/or *Refresh Mystic Points on Encounter Start*. Refreshed characters are announced in chat.
+- **Auto-refresh:** enable *Refresh Mythic Points on Session Start* (refills everyone once per calendar day when the world loads — reloading mid-session won't top anyone up again) and/or *Refresh Mythic Points on Encounter Start*. Refreshed characters are announced in chat.
 - **Encounter refresh style:** choose how each combat's refresh works (Settings → MystiX → *Encounter Refresh Style*):
   - *Refill to full* — every pool tops up to its max at the start of each combat.
   - *Fixed grant per encounter* — each combat grants a set number of points (the *Fixed Encounter Grant* setting), accumulating toward each character's max instead of resetting it. Great for attrition-based play: a party that spends everything still only gains, never overshoots, and hoarders gain nothing. Both styles announce who gained what in chat.
 
 ### As a player
 
-- **Spend on a reroll:** right-click your check's chat card → *PF2E | Reroll with Mystic Point*. One point is spent and the reroll replaces the card, just like the system's Hero Point reroll.
-- **Trigger a mystic effect:** left-click the Mystic pips on your sheet (or in the party HUD). If your GM configured more than one effect, a picker shows them with one-line summaries; pick one, spend one, and the effect's chat card announces it to the table.
+- **Spend on a reroll:** rerollable check cards show a *Mythic* button when the actor has points — one click spends a Mythic Point and rerolls with the +10 mythic proficiency bonus. A *Hero* button sits beside it when Hero Points are available, and both options remain in the chat card's right-click menu.
+- **Trigger a mythic effect:** shift-click the Mythic pips in the party HUD. If your GM configured more than one effect, a picker shows them with one-line summaries; pick one, spend one, and the effect's chat card announces it to the table.
 - **Spend freely:** with no effects configured, left-click still spends a plain point for any table-ruled use.
 
 ### Custom effects (GM)
 
-Open **Custom Mystic Effects** via the wand button in the token control bar or the ⚙ button on the party HUD. Three effect types ship:
+Open **Custom Mythic Effects** via the wand button in the token control bar or the ⚙ button on the party HUD. Three effect types ship:
 
 | Type | What it does |
 |---|---|
@@ -71,7 +71,7 @@ Open **Custom Mystic Effects** via the wand button in the token control bar or t
 | **Auto-stabilize** | Removes the dying condition (hero-point-style rescue) |
 | **Chat message** | Posts the card; nothing mechanical — for table-ruled effects |
 
-Two effects ship enabled by default: *Mystic Surge* (+2 to checks for 1 round) and *Mystic Mending* (auto-stabilize). Rename them, change values, disable them, or add your own.
+Two effects ship enabled by default: *Mythic Surge* (+2 to checks for 1 round) and *Mythic Mending* (auto-stabilize). Rename them, change values, disable them, or add your own.
 
 ### Macro API
 
@@ -117,7 +117,7 @@ game.mystix.effects.manager();                       // open the GM manager
 
 ## Storage
 
-Mystic Points are stored per-actor in `flags.mystix`, deliberately separate from the system's `mythic-points` resource. This means:
+Mythic Points are stored per-actor in `flags.mystix`, deliberately separate from the system's `mythic-points` resource. This means:
 
 - No conflict with the system's mythic Calling logic or the mythic proficiency-swap on rerolls
 - Pools persist on the actor and survive world transfer
@@ -127,7 +127,7 @@ Mystic Points are stored per-actor in `flags.mystix`, deliberately separate from
 
 If you want a rules blurb for your game notes:
 
-> **Mystic Points.** In addition to Hero Points, each character can carry Mystic Points, awarded by the GM for the same kinds of memorable play. A character can spend a Mystic Point for anything a Hero Point can do — rerolling a check, stabilizing from dying, or other effects at the GM's discretion. Mystic Points don't refresh automatically; they accumulate only as the GM awards them.
+> **Mythic Points.** In addition to Hero Points, each character can carry Mythic Points, awarded by the GM for the same kinds of memorable play. A character can spend a Mythic Point for anything a Hero Point can do — rerolling a check, stabilizing from dying, or other effects at the GM's discretion. Mythic Points don't refresh automatically; they accumulate only as the GM awards them.
 
 ## Development
 
@@ -160,6 +160,14 @@ Publishing a release is tag-driven (`.github/workflows/release.yml`):
 The zip is directly installable in Foundry: point its manifest URL at your repo's `module.json` (as in the Installation section) and players can install any published version.
 
 ## Changelog
+
+### [0.2.14] — 2026-09-21
+
+- **"Mythic", not "Mystic"**: every user-facing string, setting, tooltip, and the manifest title now say **Mythic Points**
+- **Sheet pips behave like Hero Points**: left-click adds one, right-click removes one (the widget no longer borrows the system's hero-point markup, which was intercepting clicks — this is also why clicks could move Hero Points by mistake)
+- **On-card reroll buttons**: rerollable check cards now show *Hero* and *Mythic* buttons (when the actor has points). *Mythic* spends a Mythic Point and rerolls with the **+10 mythic proficiency bonus**; *Hero* delegates to the system's own Hero Point reroll
+- **Context menu upgraded**: *PF2E | Reroll using a Mythic Point (+10)* now applies the mythic proficiency bonus (+10) via the system's `pf2e.preReroll` hook — previously it rerolled without any bonus
+- Party HUD pips match: left-click adds, right-click removes, **shift-click** opens the effect chooser
 
 Changelog entries use the format Foundry's package listing expects: one `### [x.y.z] — date` heading per release, newest first, with human-readable bullet points.
 
@@ -219,7 +227,7 @@ Changelog entries use the format Foundry's package listing expects: one `### [x.
 
 ### [0.2.0] — 2026-09-20
 
-- **Custom mystic effects**: a GM-managed registry of Mystic-Point-only powers — check bonuses (real PF2e FlatModifier effect items), auto-stabilize (removes dying), or chat-message-only — chosen by the spender from a picker, announced with styled chat cards, refunded on failure
+- **Custom mythic effects**: a GM-managed registry of Mythic-Point-only powers — check bonuses (real PF2e FlatModifier effect items), auto-stabilize (removes dying), or chat-message-only — chosen by the spender from a picker, announced with styled chat cards, refunded on failure
 - Everything earlier (0.1.x): coexisting Hero/Mystic pools with sheet pips, GM award dialog, the party tracker HUD, chat-card Mystic rerolls, session/encounter auto-refresh, and the macro API
 
 ## Compatibility

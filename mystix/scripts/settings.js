@@ -98,14 +98,14 @@ export function registerSettings() {
         type: Object,
         default: {
             "bonus-next-check": {
-                name: "Mystic Surge",
+                name: "Mythic Surge",
                 type: "bonus",
                 bonus: 2,
                 rounds: 1,
                 enabled: true,
             },
             "auto-stabilize": {
-                name: "Mystic Mending",
+                name: "Mythic Mending",
                 type: "stabilize",
                 enabled: true,
             },

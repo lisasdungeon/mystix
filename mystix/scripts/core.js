@@ -1,5 +1,5 @@
 /**
- * MystiX — Hero & Mystic Points for Pathfinder 2e (Foundry VTT)
+ * MystiX — Hero & Mythic Points for Pathfinder 2e (Foundry VTT)
  *
  * The Mystic Point pool is stored per-actor in the `flags.mystix` scope so it
  * is fully independent from the system's `mythic-points` resource (which the

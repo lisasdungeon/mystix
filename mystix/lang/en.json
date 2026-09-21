@@ -1,67 +1,59 @@
 {
   "MYSTIX": {
-    "Name": "Mystic Points",
-    "NamePlural": "Mystic Points",
+    "Name": "Mythic Points",
+    "NamePlural": "Mythic Points",
     "HeroName": "Hero Points",
     "Hint": "A second, GM-awarded pool that can be used for anything Hero Points can do.",
-    "SheetWidget": {
-      "Label": "Mystic Points",
-      "Tooltip": "Mystic Points {value}/{max} — a second, GM-awarded pool usable like Hero Points.",
-      "Award": "Award Mystic Points",
-      "Spend": "Spend Mystic Point",
-      "SpendHint": "Click to spend a Mystic Point on a Hero-Point-style use. Right-click to award (GM only)."
-    },
     "Sheet": {
-      "Label": "Mystic Points",
-      "Tooltip": "Mystic Points {value}/{max}"
+      "Label": "Mythic Points",
+      "Tooltip": "Mythic Points {value}/{max} — click to add one, right-click to remove."
     },
     "Dialog": {
-      "AwardTitle": "Award Mystic Points — {actor}",
+      "AwardTitle": "Award Mythic Points — {actor}",
       "AwardLabel": "Points to award (or negative to remove)",
-      "AwardHint": "Awards are added to the actor's current value, clamped to the Mystic Point maximum.",
-      "SetMaxLabel": "Max Mystic Points",
+      "AwardHint": "Awards are added to the actor's current value, clamped to the Mythic Point maximum.",
+      "SetMaxLabel": "Max Mythic Points",
       "SetMaxHint": "The pool size for this actor. Set to 0 to hide the widget for them.",
       "Award": "Award",
       "Cancel": "Cancel",
-      "RerollTitle": "Reroll with Mystic Point — {actor}",
-      "RerollBody": "Spend 1 Mystic Point to reroll this check? {actor} has {value} left.",
-      "RerollConfirm": "Reroll",
-      "RerollCancel": "Cancel",
-      "SpendTitle": "Spend Mystic Point",
-      "SpendBody": "Spend 1 of your {value} Mystic Points?",
+      "SpendTitle": "Spend Mythic Point",
+      "SpendBody": "Spend 1 of your {value} Mythic Points?",
       "SkipRefreshLabel": "Skip auto-refresh",
-      "SkipRefreshHint": "Exclude this character from the automatic Mystic Point refreshes (session start and encounter start). Manual awarding and spending are unaffected.",
-      "SkipRefreshBadge": "Skips automatic Mystic Point refreshes"
+      "SkipRefreshHint": "Exclude this character from the automatic Mythic Point refreshes (session start and encounter start). Manual awarding and spending are unaffected.",
+      "SkipRefreshBadge": "Skips automatic Mythic Point refreshes"
     },
     "Chat": {
-      "RerollMenu": "PF2E | Reroll with Mystic Point",
-      "RerollNoPoints": "{actor} has no Mystic Points to spend.",
-      "RerollNotCheck": "Only d20 checks can be rerolled with a Mystic Point.",
-      "RerollFailed": "MystiX | Reroll failed — Mystic Point refunded."
+      "RerollMenuMythic": "PF2E | Reroll using a Mythic Point (+10)",
+      "RerollNoPoints": "{actor} has no Mythic Points to spend.",
+      "RerollFailed": "MystiX | Reroll failed — Mythic Point refunded.",
+      "RerollButtonHero": "Hero",
+      "RerollTooltipHero": "Reroll this check using a Hero Point.",
+      "RerollButtonMythic": "Mythic",
+      "RerollTooltipMythic": "Spend a Mythic Point to reroll with the +10 mythic proficiency bonus."
     },
     "Settings": {
       "AwardDefaultMax": {
-        "name": "Default Max Mystic Points",
-        "hint": "Maximum Mystic Points for characters that haven't had one set individually."
+        "name": "Default Max Mythic Points",
+        "hint": "Maximum Mythic Points for characters that haven't had one set individually."
       },
       "HeroPointsEnabled": {
         "name": "Hero Points Stay Enabled",
-        "hint": "Keep the regular Hero Point pool visible and usable alongside Mystic Points."
+        "hint": "Keep the regular Hero Point pool visible and usable alongside Mythic Points."
       },
       "ChatReroll": {
-        "name": "Enable Mystic Reroll Context Menu",
-        "hint": "Adds a 'Reroll with Mystic Point' option to chat message context menus."
+        "name": "Enable Mythic Reroll Context Menu",
+        "hint": "Adds a 'Reroll with Mythic Point' option to chat message context menus."
       },
       "AutoOpenHud": {
         "name": "Open Party HUD on World Load",
         "hint": "Automatically open the party tracker when the world finishes loading (GM only)."
       },
       "RefreshOnSession": {
-        "name": "Refresh Mystic Points on Session Start",
-        "hint": "When the world loads, refill every character's Mystic Points to full. Happens at most once per calendar day, so reloading the world doesn't refresh again."
+        "name": "Refresh Mythic Points on Session Start",
+        "hint": "When the world loads, refill every character's Mythic Points to full. Happens at most once per calendar day, so reloading the world doesn't refresh again."
       },
       "RefreshOnEncounter": {
-        "name": "Refresh Mystic Points on Encounter Start",
+        "name": "Refresh Mythic Points on Encounter Start",
         "hint": "At the start of each combat, refill every character's pool to full — or grant a fixed amount, depending on the refresh style below."
       },
       "EncounterRefreshStyle": {
@@ -72,16 +64,16 @@
       },
       "EncounterGrant": {
         "name": "Fixed Encounter Grant",
-        "hint": "Mystic Points granted to every character at the start of each combat when the refresh style is 'Fixed grant per encounter'."
+        "hint": "Mythic Points granted to every character at the start of each combat when the refresh style is 'Fixed grant per encounter'."
       }
     },
     "Errors": {
       "GMOnly": "Only the GM can do that.",
-      "NotCharacter": "Mystic Points are only available on character sheets."
+      "NotCharacter": "Mythic Points are only available on character sheets."
     },
     "LogViewer": {
-      "Title": "MystiX — Mystic Point Log",
-      "OpenTooltip": "Open the Mystic Point log viewer",
+      "Title": "MystiX — Mythic Point Log",
+      "OpenTooltip": "Open the Mythic Point log viewer",
       "FilterActor": "Character",
       "FilterAction": "Action",
       "FilterUser": "User",
@@ -95,9 +87,9 @@
       "EntriesLabel": "Entries",
       "EntriesTooltip": "Show every logged action",
       "SummaryLabel": "Summary",
-      "SummaryTooltip": "Show net Mystic Point change per character for each session",
+      "SummaryTooltip": "Show net Mythic Point change per character for each session",
       "DailyLabel": "Daily",
-      "DailyTooltip": "Show net Mystic Point change per character for each day",
+      "DailyTooltip": "Show net Mythic Point change per character for each day",
       "SummaryRow": "Spent {spent} · Gained {gained}",
       "SummaryActions": "{count} logged actions",
       "CopyLabel": "Copy",
@@ -114,17 +106,17 @@
       "Empty": "No characters to show.",
       "KeybindingName": "Toggle Party HUD",
       "KeybindingHint": "Show or hide the MystiX party tracker panel.",
-      "LogLabel": "Mystic Point Log"
+      "LogLabel": "Mythic Point Log"
     },
     "Log": {
-      "Empty": "No Mystic Point activity yet.",
+      "Empty": "No Mythic Point activity yet.",
       "Clear": "Clear log",
-      "ClearTooltip": "Clear the Mystic Point log",
+      "ClearTooltip": "Clear the Mythic Point log",
       "ByUser": "by {user}",
       "Actions": {
-        "Spend": "spent 1 Mystic Point",
-        "Award": "+{amount} Mystic Point(s)",
-        "Remove": "−{amount} Mystic Point(s)",
+        "Spend": "spent 1 Mythic Point",
+        "Award": "+{amount} Mythic Point(s)",
+        "Remove": "−{amount} Mythic Point(s)",
         "Refresh": "refreshed to full",
         "FixedGrant": "+{amount} from encounter",
         "Effect": "triggered a mystic effect",
@@ -132,55 +124,55 @@
       }
     },
     "ActorLog": {
-      "Title": "MystiX — Mystic History: {actor}",
-      "ButtonTooltip": "View this character's full Mystic Point history",
+      "Title": "MystiX — Mythic History: {actor}",
+      "ButtonTooltip": "View this character's full Mythic Point history",
       "NetTotal": "Lifetime net",
       "Spent": "Spent",
       "Gained": "Gained",
       "Lifetime": "Pool {first} → {last}",
-      "Empty": "No logged Mystic Point activity for this character yet."
+      "Empty": "No logged Mythic Point activity for this character yet."
     },
     "Report": {
-      "Title": "End-of-Session Mystic Report",
+      "Title": "End-of-Session Mythic Report",
       "NetHeader": "Net",
       "DetailHeader": "Spent / Gained",
       "PoolHeader": "Pool",
-      "EmptyLog": "MystiX | No logged Mystic Point activity to report yet.",
+      "EmptyLog": "MystiX | No logged Mythic Point activity to report yet.",
       "CloseTitle": "End the Session",
-      "CloseBody": "Post the end-of-session Mystic Point report card to chat?"
+      "CloseBody": "Post the end-of-session Mythic Point report card to chat?"
     },
     "Refresh": {
-      "Announce": "Mystic Points refreshed to full:",
-      "AnnounceFixed": "Mystic Points granted for the encounter (+{amount} each):",
-      "Manual": "Mystic Points refreshed manually for the party."
+      "Announce": "Mythic Points refreshed to full:",
+      "AnnounceFixed": "Mythic Points granted for the encounter (+{amount} each):",
+      "Manual": "Mythic Points refreshed manually for the party."
     },
     "EffectCard": {
-      "ChooserTitle": "Mystic Effect — {actor}",
-      "ChooserPoints": "You have {value} Mystic Point(s). Choose an effect:",
+      "ChooserTitle": "Mythic Effect — {actor}",
+      "ChooserPoints": "You have {value} Mythic Point(s). Choose an effect:",
       "SummaryBonus": "+{bonus} to checks for {rounds} round(s)",
       "SummaryStabilize": "Removes the dying condition",
       "SummaryMessage": "Flavor-only effect",
-      "BonusDescription": "Gains a +{bonus} circumstance bonus to checks for {rounds} round(s) (Mystic Surge).",
-      "StabilizedDescription": "Mystic energy knits flesh and spirit — the dying condition is removed.",
+      "BonusDescription": "Gains a +{bonus} circumstance bonus to checks for {rounds} round(s) (Mythic Surge).",
+      "StabilizedDescription": "Mythic energy knits flesh and spirit — the dying condition is removed.",
       "NoConditionDescription": "Not dying — the mystic power finds no wound to mend (point spent).",
       "MessageDescription": "{text}",
       "UnknownEffect": "MystiX | Unknown effect.",
-      "Failed": "MystiX | Effect failed — Mystic Point refunded.",
+      "Failed": "MystiX | Effect failed — Mythic Point refunded.",
       "NoEffects": "MystiX | No custom effects are enabled. Ask your GM to configure them.",
-      "Refunded": "MystiX | Mystic Point refunded."
+      "Refunded": "MystiX | Mythic Point refunded."
     },
     "Manager": {
-      "Title": "MystiX — Custom Mystic Effects",
+      "Title": "MystiX — Custom Mythic Effects",
       "Hint": "Effects appear in the spender chooser for every character. Toggle, edit, or add your own.",
       "Empty": "No custom effects configured yet.",
       "EnabledTooltip": "Whether this effect appears in the spender chooser",
       "Edit": "Edit effect",
       "Delete": "Delete effect",
       "Add": "Add Effect",
-      "AddTitle": "Add Mystic Effect",
-      "EditTitle": "Edit Mystic Effect — {name}",
+      "AddTitle": "Add Mythic Effect",
+      "EditTitle": "Edit Mythic Effect — {name}",
       "NameLabel": "Name",
-      "NamePlaceholder": "e.g., Mystic Surge",
+      "NamePlaceholder": "e.g., Mythic Surge",
       "NameRequired": "MystiX | The effect needs a name.",
       "TypeLabel": "Type",
       "TypeHint": "Bonus adds an in-system modifier; Stabilize removes the dying condition; Message posts a chat card only.",
@@ -193,7 +185,7 @@
       "RoundsHint": "How long the bonus effect lasts.",
       "TextLabel": "Message text",
       "TextHint": "Shown on the chat card for message-only effects.",
-      "DeleteTitle": "Delete Mystic Effect",
+      "DeleteTitle": "Delete Mythic Effect",
       "DeleteBody": "Delete '{name}'? Players will no longer be able to choose it.",
       "Save": "Save"
     }

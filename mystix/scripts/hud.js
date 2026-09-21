@@ -257,8 +257,8 @@ class MystiXPartyHUD extends HandlebarsApplicationMixin(ApplicationV2) {
             });
         }
 
-        // Mystic pips: left-click spends one, shift-click awards one (GM),
-        // right-click removes one (GM).
+        // Mythic pips: left-click adds one, right-click removes one, and
+        // shift-click opens the effect chooser — matching the sheet widget.
         for (const pips of root.querySelectorAll(".mystix-hud-pool.mystic .pips")) {
             pips.addEventListener("click", (event) => this.#onMysticPipClick(event, pips));
             pips.addEventListener("contextmenu", (event) => {
@@ -279,9 +279,9 @@ class MystiXPartyHUD extends HandlebarsApplicationMixin(ApplicationV2) {
 
     #onMysticPipClick(event, pips) {
         if (event.shiftKey) {
-            this.#onMysticPipAdjust(pips, 1);
-        } else {
             this.#onMysticPipSpend(pips);
+        } else {
+            this.#onMysticPipAdjust(pips, 1);
         }
     }
 
@@ -293,9 +293,9 @@ class MystiXPartyHUD extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     async #onMysticPipAdjust(pips, delta) {
-        if (!game.user.isGM) return;
         const actor = MystiXPartyHUD.#actorFromRow(pips);
-        if (actor) await awardMysticPoints(actor, delta);
+        if (!actor || !(game.user.isGM || actor.isOwner)) return;
+        await awardMysticPoints(actor, delta);
     }
 }
 

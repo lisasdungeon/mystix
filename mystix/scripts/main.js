@@ -1,5 +1,5 @@
 /**
- * MystiX — Hero & Mystic Points for Pathfinder 2e (Foundry VTT)
+ * MystiX — Hero & Mythic Points for Pathfinder 2e (Foundry VTT)
  *
  * Entry point: registers settings, hooks, the macro-facing API, and the
  * floating party tracker HUD.
@@ -29,7 +29,7 @@ Hooks.once("init", () => {
     registerKeybinding();
     registerRefreshHooks();
 
-    console.log("MystiX | Hero & Mystic Points initialized.");
+    console.log("MystiX | Hero & Mythic Points initialized.");
 });
 
 // Register the HUD button in the main control bar.
@@ -81,7 +81,7 @@ Hooks.once("ready", () => {
             chooser: (actor) => openEffectChooser(actor),
             manager: () => openEffectManager(),
         },
-        version: "0.2.13",
+        version: "0.2.14",
     });
 
     // Optionally open the HUD on world load (GMs only, when enabled).

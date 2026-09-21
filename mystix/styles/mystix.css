@@ -1,7 +1,7 @@
-/* MystiX — Hero & Mystic Points */
+/* MystiX — Hero & Mythic Points */
 
-/* Mystic Point pips, styled to sit beside the system's hero-point dots. */
-.dots.mystix-points {
+/* Mythic Point pips, styled to sit beside the system's hero-point dots. */
+.mystix-points {
     display: flex;
     align-items: center;
     gap: 0.25rem;
@@ -15,7 +15,7 @@
  * The label uses the system's gold, like "Hero Points" on the same header;
  * bold + !important so PF2e's own header rules can never out-specify it.
  */
-.dots.mystix-points .label {
+.mystix-points .label {
     font-size: 0.8rem !important;
     font-weight: 700 !important;
     color: #f5c542 !important;
@@ -26,26 +26,26 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-.dots.mystix-points .pips {
+.mystix-points .pips {
     display: inline-flex;
     align-items: center;
     gap: 0.15rem;
     cursor: pointer;
 }
 
-.dots.mystix-points .pips i {
+.mystix-points .pips i {
     font-size: 0.9rem;
     transition: transform 0.1s ease, color 0.1s ease;
 }
 
-.dots.mystix-points .pips i.fa-regular {
+.mystix-points .pips i.fa-regular {
     color: #e2d5f7 !important;
     opacity: 0.9;
 }
 
 /* Filled pips glow: bright arcane violet, clearly distinct from the
  * system's white/gold hero points on the same header. */
-.dots.mystix-points .pips i.fa-circle-m {
+.mystix-points .pips i.fa-circle-m {
     color: #d8b4fe !important;
     text-shadow:
         0 0 4px rgba(216, 180, 254, 0.95),
@@ -53,9 +53,58 @@
         0 1px 2px rgba(0, 0, 0, 0.6) !important;
 }
 
-.dots.mystix-points .pips:hover i {
+.mystix-points .pips:hover i {
     transform: scale(1.1);
     color: #e9d5ff;
+}
+
+/* ------------------------------------------------------------------ */
+/* On-card reroll buttons                                              */
+/* ------------------------------------------------------------------ */
+
+.mystix-reroll-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.3rem;
+}
+
+.mystix-reroll-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex: 1 1 auto;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0.15rem 0.5rem;
+    font-size: var(--font-size-11);
+    line-height: 1.4;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    color: var(--color-text-dark-primary, #191813);
+    text-align: center;
+}
+
+.mystix-reroll-btn i {
+    font-size: 0.85em;
+}
+
+.mystix-reroll-btn[data-reroll="mythic"] {
+    border-color: rgba(106, 63, 160, 0.55);
+    color: var(--pf2e-color-purple, #6a3fa0);
+}
+
+.mystix-reroll-btn:hover {
+    box-shadow: 0 0 4px rgba(106, 63, 160, 0.45);
+    text-shadow: none;
+    transform: none;
+}
+
+.mystix-reroll-btn[data-reroll="mythic"]:hover {
+    box-shadow: 0 0 5px rgba(106, 63, 160, 0.55);
 }
 
 /* ------------------------------------------------------------------ */
